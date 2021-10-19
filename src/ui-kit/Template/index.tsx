@@ -1,14 +1,19 @@
+import { Layout } from "antd";
 import React from "react";
-import Content from "../Content";
-import Footer from "../Footer";
-import Header from "../Header";
+import Wrapper from "../Wrapper";
+
+const { Header, Footer, Content } = Layout;
 
 export default function Template() {
   return (
-    <>
-      <Header />
-      <Content />
-      <Footer />
-    </>
+    <Wrapper>
+      <Layout>
+        <Header>Header</Header>
+
+        <Content>Content</Content>
+
+        <Footer>Footer</Footer>
+      </Layout>
+    </Wrapper>
   );
 }
