@@ -3,12 +3,12 @@ import NotFound from "../pages/NotFound";
 import TestCompomemt from "../pages/TestComponent";
 
 export enum EPath {
-  MANUFACTURERS = "MANUFACTURERS",
+  TEST_PATH = "TEST_PATH",
   NOT_FOUND = "NOT_FOUND",
 }
 
 export const paths: Record<EPath, RouteProps> = {
-  MANUFACTURERS: {
+  TEST_PATH: {
     path: "/",
     exact: true,
     component: TestCompomemt,
