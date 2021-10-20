@@ -8,12 +8,9 @@ const { Header, Content } = Layout;
 
 interface Props {
   headerComponents: ReactNode;
-  contentComponents: ReactNode;
+  children?: ReactNode;
 }
-export default function Template({
-  headerComponents,
-  contentComponents,
-}: Props) {
+export default function Template({ headerComponents, children }: Props) {
   return (
     <Wrapper>
       <Layout>
@@ -22,7 +19,7 @@ export default function Template({
         </Header>
 
         <Content>
-          <ContentBlock>{contentComponents}</ContentBlock>
+          <ContentBlock>{children}</ContentBlock>
         </Content>
       </Layout>
     </Wrapper>
