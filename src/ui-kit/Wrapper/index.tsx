@@ -1,6 +1,7 @@
 import React from "react";
-import "./wrapper.css";
+import { TChildren } from "../../core/types";
+import "./wrapper.less";
 
-export default function Wrapper(props: any) {
-  return <div>{props.children}</div>;
+export default function Wrapper({ children }: TChildren) {
+  return <div className="wrapper">{children}</div>;
 }

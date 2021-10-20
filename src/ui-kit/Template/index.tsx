@@ -1,27 +1,29 @@
 import { Layout } from "antd";
-import React from "react";
+import React, { ReactNode } from "react";
 import ContentBlock from "../ContentBlock";
-import FooterBlock from "../FooterBlock";
 import HeaderBlock from "../HeaderBlock";
 import Wrapper from "../Wrapper";
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
-export default function Template() {
+interface Props {
+  headerComponents: ReactNode;
+  contentComponents: ReactNode;
+}
+export default function Template({
+  headerComponents,
+  contentComponents,
+}: Props) {
   return (
     <Wrapper>
       <Layout>
         <Header>
-          <HeaderBlock />
+          <HeaderBlock>{headerComponents}</HeaderBlock>
         </Header>
 
         <Content>
-          <ContentBlock />
+          <ContentBlock>{contentComponents}</ContentBlock>
         </Content>
-
-        <Footer>
-          <FooterBlock />
-        </Footer>
       </Layout>
     </Wrapper>
   );
