@@ -3,12 +3,13 @@ import { randomDice } from "../../../core/utils";
 import { TDices } from "./types";
 
 const DiceDomain = createDomain("DiceDomain");
-export const hideDices = DiceDomain.event();
-const setDices = DiceDomain.event<TDices>();
 
+const setDices = DiceDomain.event<TDices>();
 const setRandomDices = DiceDomain.event<void>();
+
 export const stopRolling = DiceDomain.event<void>();
 export const startRolling = DiceDomain.event<void>();
+export const hideDices = DiceDomain.event();
 
 const getRandomDices = (dices: TDices): TDices => {
   const dice1 = randomDice();
@@ -26,7 +27,7 @@ export const initDices: TDices = {
   dice2: 1,
   dicesSum: 2,
   rolling: false,
-  isShown: false,
+  isShown: true,
 };
 
 export const rollDicesFx = DiceDomain.effect(async () => {
@@ -34,15 +35,12 @@ export const rollDicesFx = DiceDomain.effect(async () => {
     hideDices();
     startRolling();
     setRandomDices();
-    stopRolling();
   };
-
-  return setTimeout(rollMe, 10);
+  setTimeout(rollMe);
+  return new Promise((resolve) => setTimeout(resolve, 1500));
 });
 
-rollDicesFx.done.watch(() => {
-  stopRolling();
-});
+rollDicesFx.done.watch(() => stopRolling());
 
 export const dices$ = DiceDomain.store<TDices>(initDices)
 
@@ -50,7 +48,4 @@ export const dices$ = DiceDomain.store<TDices>(initDices)
   .on(startRolling, (data) => ({ ...data, rolling: true, isShown: true }))
   .on(stopRolling, (data) => ({ ...data, rolling: false }))
   .on(setRandomDices, (data) => setDices(getRandomDices(data)))
-
-  .reset(hideDices);
-
-dices$.watch(console.log);
+  .on(hideDices, (data) => ({ ...data, isShown: false }));
