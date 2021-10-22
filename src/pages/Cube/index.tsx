@@ -1,28 +1,27 @@
 import { Button } from "antd";
 import { useStore } from "effector-react";
 import React, { useRef } from "react";
-import { dices$, rollDices } from "./model/store";
+import { dices$, rollDicesFx } from "./model/store";
 import "./style.less";
+import "./diceDots.less";
 
 export default function Cube() {
-  const { dice1, dice2, dice3 } = useStore(dices$);
+  const { dice1, dice2, dice3, roll } = useStore(dices$);
 
   const d1 = useRef<HTMLDivElement>(null);
   const d2 = useRef<HTMLDivElement>(null);
   const d3 = useRef<HTMLDivElement>(null);
 
-  setTimeout(() => {
-    const r1 = d1.current;
-    r1 && (r1.className = `r${dice1} diceBody`);
-    const r2 = d2.current;
-    r2 && (r2.className = `r${dice2} diceBody`);
-    const r3 = d3.current;
-    r3 && (r3.className = `r${dice3} diceBody`);
-  }, 1000);
+  const r1 = d1.current;
+  r1 && (r1.className = `r${roll ? "rollMe" : dice1} diceBody`);
+  const r2 = d2.current;
+  r2 && (r2.className = `r${roll ? "rollMe" : dice2} diceBody`);
+  const r3 = d3.current;
+  r3 && (r3.className = `r${roll ? "rollMe" : dice3} diceBody`);
 
   return (
     <>
-      <Button onClick={() => rollDices()}>Roll</Button>
+      <Button onClick={() => rollDicesFx()}>Roll</Button>
       <div className="dicesWrapper">
         {dice1 && (
           <div className="dices">

@@ -4,10 +4,7 @@ import { TDices } from "./types";
 
 const DiceDomain = createDomain("DiceDomain");
 export const hideDices = DiceDomain.event();
-
-export const rollDices = DiceDomain.event<void>();
-export const setRandomDices = DiceDomain.event<void>();
-export const setDices = DiceDomain.event<TDices>();
+const setDices = DiceDomain.event<TDices>();
 
 const getRandomDices = (): TDices => {
   const dice1 = randomDice();
@@ -17,6 +14,7 @@ const getRandomDices = (): TDices => {
     dice1,
     dice2,
     dice3,
+    roll: false,
     dicesSum: dice1 + dice2 + dice3,
   };
 };
@@ -26,15 +24,21 @@ export const initDices: TDices = {
   dice2: 1,
   dice3: 1,
   dicesSum: 3,
+  roll: false,
 };
 
+export const rollDicesFx = DiceDomain.effect(async () => {
+  setDices({ ...dices$.getState(), roll: true });
+  return new Promise((resolve) => setTimeout(resolve));
+});
+
+rollDicesFx.done.watch(() => {
+  setDices(getRandomDices());
+});
+
 export const dices$ = DiceDomain.store<TDices>(initDices)
-  .on(rollDices, (_, data) => {
-    console.log(111111111);
-    setTimeout(() => setDices(getRandomDices()), 2000);
-    setTimeout(() => setDices(getRandomDices()), 4000);
-    setTimeout(() => setDices(getRandomDices()), 6000);
-  })
+
   .on(setDices, (_, data) => data)
-  .on(setRandomDices, (_, data) => {})
   .reset(hideDices);
+
+dices$.watch(console.log);
