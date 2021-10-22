@@ -1,0 +1,133 @@
+.dicesWrapper {
+  width: 100%;
+  height: 500px;
+  border: 2px solid red;
+}
+.table-body-board-generators > div {
+  position: absolute;
+  z-index: 4;
+}
+
+.table-body-board-generators {
+  .r0 {
+    transform: rotateY(0deg) rotateX(0deg) !important;
+    transition: transform 1s;
+  }
+  // 1
+  .r1 {
+    transform: rotateY(900deg) rotateX(900deg) !important;
+    transition: transform 1s;
+  }
+  // 2
+  .r2 {
+    transform: rotateY(900deg) rotateX(810deg) !important;
+    transition: transform 1s;
+  }
+  // 5
+  .r5 {
+    transform: rotateY(900deg) rotateX(990deg) !important;
+    transition: transform 1s;
+  }
+  // 3
+  .r3 {
+    transform: rotateY(990deg) rotateX(900deg) !important;
+    transition: transform 1s;
+  }
+  // 4
+  .r4 {
+    transform: rotateY(810deg) rotateX(900deg) !important;
+    transition: transform 1s;
+  }
+  // 6
+  .r6 {
+    transform: rotateY(900deg) rotateX(1080deg) !important;
+    transition: transform 1s;
+  }
+
+  .dices {
+    top: 300px;
+    left: 170px;
+    width: 350px;
+    height: 200px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .diceBody {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+  .diceFace {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+
+    text-align: center;
+    line-height: 100px;
+    font-size: 45px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+  }
+  .dice1 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateX(0deg) translateZ(50px);
+  }
+  .dice2 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateX(90deg) translateZ(50px);
+  }
+  .dice3 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateY(90deg) translateZ(50px);
+  }
+  .dice4 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateY(-90deg) translateZ(50px);
+  }
+  .dice6 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateY(180deg) translateZ(50px);
+  }
+
+  .dice5 {
+    background-color: rgba(255, 255, 255, 1);
+    transform: rotateX(-90deg) translateZ(50px);
+  }
+
+  .dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #444;
+    box-shadow: inset 5px 0 10px #000;
+  }
+
+  .dot.center {
+    margin: 38px 0 0 38px;
+  }
+  .dot.dtop {
+    margin-top: 10px;
+  }
+  .dot.dleft {
+    margin-left: 65px;
+  }
+  .dot.dright {
+    margin-left: 10px;
+  }
+  .dot.dbottom {
+    margin-top: 67px;
+  }
+  .dot.center.dleft {
+    margin: 38px 0 0 10px;
+  }
+  .dot.center.dright {
+    margin: 38px 0 0 65px;
+  }
+  .current-value {
+    font-size: 18px;
+    color: #93c45c;
+    font-weight: 700;
+  }
+}
