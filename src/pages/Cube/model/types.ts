@@ -1,7 +1,9 @@
-export interface IDices {
-  dice1: 1 | 2 | 3 | 4 | 5 | 6;
-  dice2: 1 | 2 | 3 | 4 | 5 | 6;
-  dice3?: 1 | 2 | 3 | 4 | 5 | 6;
+import { TDiceValue } from "../../../core/types";
+
+export type TDices = {
+  dice1: TDiceValue;
+  dice2: TDiceValue;
+  dice3?: TDiceValue;
 
   dicesSum?: number;
-}
+};
