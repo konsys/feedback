@@ -5,7 +5,7 @@ import { dices$, rollDicesFx } from "./model/store";
 import "./style.less";
 import "./diceDots.less";
 
-export default function Cube() {
+export default function Dices() {
   const { dice1, dice2, rolling, isShown } = useStore(dices$);
 
   const d1 = useRef<HTMLDivElement>(null);
