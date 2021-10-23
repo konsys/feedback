@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { useStore } from "effector-react";
 import React, { useRef } from "react";
-import { dices$, rollDicesFx } from "./model/store";
+import { dices$, rollDices } from "./model/store";
 import "./style.less";
 import "./diceDots.less";
 
@@ -18,7 +18,7 @@ export default function Dices() {
 
   return (
     <>
-      <Button onClick={() => rollDicesFx()} disabled={rolling}>
+      <Button onClick={() => rollDices()} disabled={rolling}>
         Roll
       </Button>
       <div className="dicesWrapper">

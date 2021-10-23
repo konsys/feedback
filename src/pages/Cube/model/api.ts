@@ -3,7 +3,7 @@ import { client } from "../../../http/Clients";
 
 const URL = `/dices`;
 
-export async function rollDices(params?: any): Promise<any> {
+export async function rollDicesFetch(params?: any): Promise<any> {
   return await (
     await client.get(URL, params)
   ).data;
