@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { createDomain } from "effector";
 import { rollDices } from "./api";
 import { TDices } from "./types";
@@ -25,9 +24,8 @@ export const rollDicesFx = DiceDomain.effect<void, TDices, Error>({
 
 rollDicesFx.done.watch(({ result }) => {
   console.log(111111111111, result);
-  // setDices({
-  //   dice1: result,
-  // });
+  // result = result.dices;
+  setDices(result);
 });
 
 export const dices$ = DiceDomain.store<TDices>(initDices)

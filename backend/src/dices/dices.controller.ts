@@ -1,20 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
 import { randomDice } from 'src/utils';
-import { TDices } from 'src/utils/types';
-
-export type TDicesResponce = {
-  dices: TDices;
-};
+import { TDices } from './types';
 
 @Controller('dices')
 export class DicesController {
   @Get()
-  findAll(): TDicesResponce {
+  findAll(): TDices {
+    const d1 = randomDice();
+    const d2 = randomDice();
     return {
-      dices: {
-        dice1: randomDice(),
-        dice2: randomDice(),
-      },
+      dice1: d1,
+      dice2: d2,
+      dicesSum: d1 + d2,
+      isShown: true,
+      rolling: true,
     };
   }
 }

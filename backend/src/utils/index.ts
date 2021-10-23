@@ -1,4 +1,4 @@
-import { TDiceValue } from './types';
+import { TDiceValue } from 'src/dices/types';
 
 const random = (min: number, max: number) =>
   Math.ceil(min + Math.random() * (max - min));
