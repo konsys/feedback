@@ -146,12 +146,13 @@ export class Auth {
 
   private static setAuthHeader(token = Auth.accessToken) {
     if (token != null) {
-      client.defaults.headers[authTokenName] = `Bearer ${token}`;
+      // TODO add type
+      // client.defaults.headers[authTokenName] = `Bearer ${token}`;
     }
   }
 
   public static cleanAuthHeaders() {
-    client.defaults.headers["Authorization"] = undefined;
+    // client.defaults.headers[authTokenName] = undefined;
   }
 
   private static isAccessTokenExpired(): boolean {

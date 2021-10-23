@@ -1,11 +1,10 @@
+import { client } from "../../../http/Clients";
 import {
   IPlayer,
   IRegistrationResponce,
   IUser,
   IUserRegistration,
-} from "../../types/types";
-
-import { client } from "../../http/client";
+} from "./types";
 
 const usersUrl = `/users`;
 const initUsersUrl = `/users/init`;
@@ -16,32 +15,25 @@ export const initUsersFetch = async ({
   ids: number[];
   gameId: string;
 }): Promise<IPlayer[]> =>
-  await (
-    await client.get(initUsersUrl, { params: { ids, gameId } })
-  ).data;
+  (await client.get<IPlayer[]>(initUsersUrl, { params: { ids, gameId } })).data;
 
 export const usersFetch = async (ids: number[]): Promise<IPlayer[]> => {
-  return await (
-    await client.get(usersUrl, { params: { ids } })
-  ).data;
+  return (await client.get<IPlayer[]>(usersUrl, { params: { ids } })).data;
 };
 
 const profileUrl = `/users/profile`;
 
 export async function fetchMyProfile(): Promise<IUser> {
-  const user = await client.get(profileUrl);
-  return user ? await user.data : undefined;
+  return (await client.get<IUser>(profileUrl)).data;
 }
 
 export async function fetchUserProfile(id: number): Promise<IUser> {
   const url = profileUrl + "/" + id;
-  const user = await client.get(url);
-  return user ? await user.data : undefined;
+  return (await client.get<IUser>(url)).data;
 }
 
 export async function fetchUserEmail(email: string): Promise<IUser> {
-  const user = await client.get("/users/creds", { params: { email } });
-  return user ? await user.data : undefined;
+  return (await client.get<IUser>("/users/creds", { params: { email } })).data;
 }
 
 const refreshUrl = `/users/auth/refresh`;
@@ -49,23 +41,20 @@ const refreshUrl = `/users/auth/refresh`;
 export async function fetchRefreshToken(
   accessToken: string
 ): Promise<{ accessToken: string }> {
-  return await (
-    await client.post(refreshUrl, { accessToken })
+  return (
+    await client.post<{ accessToken: string }>(refreshUrl, { accessToken })
   ).data;
 }
 
 const logoutUrl = `/users/auth/logout`;
 
 export async function fetchLogout(refreshToken: string): Promise<boolean> {
-  return await (
-    await client.post(logoutUrl, { refreshToken })
-  ).data.result;
+  return (await client.post<boolean>(logoutUrl, { refreshToken })).data;
 }
 
 export async function fetchRegister(
   user: IUserRegistration
 ): Promise<IRegistrationResponce> {
-  return await (
-    await client.post("/users/register", user)
-  ).data;
+  return (await client.post<IRegistrationResponce>("/users/register", user))
+    .data;
 }

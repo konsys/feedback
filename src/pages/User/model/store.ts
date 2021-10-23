@@ -1,16 +1,7 @@
-import { IRegistrationResponce, IUser, IUserRegistration } from "types/types";
-
 import { createGate } from "effector-react";
 
-import { combine, merge, sample } from "effector";
-import {
-  clearToken,
-  getRefreshToken,
-  saveToken,
-  clearRefreshToken,
-} from "../Token/TokenModel";
-import { setError } from "../Error/ErrorModel";
-import { myPendingRoom$, removePlayerFromRoomFx } from "../Rooms/RoomsModel";
+import { combine, createDomain, merge, sample } from "effector";
+
 import {
   fetchLogout,
   fetchMyProfile,
@@ -19,8 +10,16 @@ import {
   fetchUserEmail,
   fetchUserProfile,
 } from "./api";
+import { IRegistrationResponce, IUser, IUserRegistration } from "./types";
+import {
+  clearRefreshToken,
+  clearToken,
+  getRefreshToken,
+  saveToken,
+} from "../../../http/AuthService/model";
+import { setError } from "../../../core/errors";
 
-const UserDomain = GameDomain.domain("UserDomain");
+const UserDomain = createDomain("UserDomain");
 
 export const ProfileGate = createGate();
 
@@ -110,15 +109,11 @@ sample({
   source: combine({
     gate: ProfileGate.state,
     user: user$.map((v) => v),
-    room: myPendingRoom$.map((v) => v),
   }),
-  fn: ({ room, user }) => {
+  fn: ({ user }) => {
     const token = getRefreshToken();
     clearRefreshToken();
     clearToken();
-    room &&
-      user &&
-      removePlayerFromRoomFx({ roomId: room.roomId, userId: user.userId });
     return token || "";
   },
   target: logoutFx,
