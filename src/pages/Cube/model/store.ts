@@ -45,5 +45,3 @@ export const dices$ = DiceDomain.store<TDices>(initDices)
   .on(startRolling, (data) => ({ ...data, rolling: true }))
   .on(stopRolling, (data) => ({ ...data, rolling: false }))
   .reset(hideDices);
-
-dices$.watch(console.log);
