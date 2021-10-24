@@ -6,12 +6,7 @@ import { dices$, rollDices } from "./model/store";
 import "./position.less";
 import "./diceDots.less";
 import "./rotateDices.less";
-import { OneDice } from "./components/OneDice";
-import { TwoDice } from "./components/TwoDice";
-import { ThreeDice } from "./components/ThreeDice";
-import { FourDice } from "./components/FourDice";
-import { FiveDice } from "./components/FiveDice";
-import { SixDice } from "./components/SixDice";
+import { Dice } from "./components/Dice";
 
 export default function Dices() {
   const { dice1, dice2, rolling } = useStore(dices$);
@@ -27,42 +22,28 @@ export default function Dices() {
   return (
     <>
       <div className="dicesWrapper">
-        <Row>
+        <Row className="dices">
           <Col className="gutter-row" span={6}></Col>
           <Col span={12}>
             <Row>
               <Col className="gutter-row" span={12}>
-                <div ref={d1} className=" diceBody">
-                  <OneDice />
-                  <TwoDice />
-                  <ThreeDice />
-                  <FourDice />
-                  <FiveDice />
-                  <SixDice />
-                </div>
+                <Dice ref={d1} />
               </Col>
               <Col className="gutter-row" span={12}>
-                <div ref={d2} className=" diceBody">
-                  <OneDice />
-                  <TwoDice />
-                  <ThreeDice />
-                  <FourDice />
-                  <FiveDice />
-                  <SixDice />
-                </div>
+                <Dice ref={d2} />
               </Col>
             </Row>
           </Col>
           <Col className="gutter-row" span={6}></Col>
         </Row>
-        <Row>
+        <Row className="rollButton">
           <Col>
             <Button
               onClick={() => rollDices()}
               disabled={rolling}
               type="primary"
             >
-              Roll
+              Вращать
             </Button>
           </Col>
         </Row>
