@@ -23,18 +23,14 @@ export default function Dices() {
     <>
       <div className="dicesWrapper">
         <Row className="dices">
-          <Col className="gutter-row" span={6}></Col>
-          <Col span={12}>
-            <Row>
-              <Col className="gutter-row" span={12}>
-                <Dice ref={d1} />
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <Dice ref={d2} />
-              </Col>
-            </Row>
+          <Col className="gutter-row dice" span={6} />
+          <Col className="gutter-row dice" span={6}>
+            <Dice ref={d1} />
           </Col>
-          <Col className="gutter-row" span={6}></Col>
+          <Col className="gutter-row dice" span={6}>
+            <Dice ref={d2} />
+          </Col>
+          <Col className="gutter-row dice" span={6} />
         </Row>
         <Row className="rollButton">
           <Col>
