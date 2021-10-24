@@ -13,7 +13,7 @@ export class DicesController {
       dice2: d2,
       dicesSum: d1 + d2,
       isShown: true,
-      rolling: true,
+      rolling: false,
     };
   }
 }

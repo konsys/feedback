@@ -1,4 +1,4 @@
-import { createDomain, sample } from "effector";
+import { createDomain, guard } from "effector";
 import { rollDicesFetch } from "./api";
 import { TDices } from "./types";
 
@@ -7,36 +7,43 @@ const DiceDomain = createDomain("DiceDomain");
 const setDices = DiceDomain.event<TDices>();
 
 export const stopRolling = DiceDomain.event<void>();
+export const startRolling = DiceDomain.event<void>();
 export const rollDices = DiceDomain.event<void>();
 export const hideDices = DiceDomain.event();
 
 export const initDices: TDices = {
-  dice1: 1,
-  dice2: 1,
-  dicesSum: 2,
+  dice1: 0,
+  dice2: 0,
+  dicesSum: 0,
   rolling: false,
-  isShown: true,
+  isShown: false,
 };
 
 const rollDicesFx = DiceDomain.effect<void, TDices, Error>({
   handler: rollDicesFetch,
 });
 
-rollDicesFx.done.watch(({ result }) => {
-  setTimeout(() => setDices(result), 100);
-  setTimeout(stopRolling, 100);
+rollDicesFx.pending.watch(() => {
+  startRolling();
 });
 
-sample({
-  clock: rollDices,
-  // source: $dices ,
+rollDicesFx.done.watch(({ result }) => {
+  setDices(result);
+  setTimeout(stopRolling, 800);
+});
 
-  fn: hideDices,
+const isIdle = rollDicesFx.pending.map((pending) => !pending);
+
+guard({
+  clock: rollDices,
+  filter: isIdle,
   target: rollDicesFx,
 });
 
 export const dices$ = DiceDomain.store<TDices>(initDices)
-
   .on(setDices, (_, data) => data)
+  .on(startRolling, (data) => ({ ...data, rolling: true }))
   .on(stopRolling, (data) => ({ ...data, rolling: false }))
-  .on(hideDices, (data) => ({ ...data, isShown: false }));
+  .reset(hideDices);
+
+dices$.watch(console.log);
