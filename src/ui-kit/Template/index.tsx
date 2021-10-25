@@ -1,26 +1,22 @@
-import { Layout } from "antd";
+import { Card, Layout } from "antd";
 import React, { ReactNode } from "react";
 import ContentBlock from "../ContentBlock";
-import HeaderBlock from "../HeaderBlock";
 import Wrapper from "../Wrapper";
 
-const { Header, Content } = Layout;
-
 interface Props {
-  headerComponents: ReactNode;
   children?: ReactNode;
 }
-export default function Template({ headerComponents, children }: Props) {
+export default function Template({ children }: Props) {
   return (
     <Wrapper>
       <Layout>
-        <Header>
-          <HeaderBlock>{headerComponents}</HeaderBlock>
-        </Header>
-
-        <Content>
+        <Card
+          title="Default size card"
+          style={{ height: "100%" }}
+          extra={<a href="/">More</a>}
+        >
           <ContentBlock>{children}</ContentBlock>
-        </Content>
+        </Card>
       </Layout>
     </Wrapper>
   );

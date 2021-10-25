@@ -1,11 +1,10 @@
 @import "~antd/lib/style/themes/default.less";
 @import "~antd/dist/antd.less"; // Import Ant Design styles by less entry
 
-@template-width: 800px;
+@template-width: 80%;
+@template-min-width: 450px;
 
 @template-height: 496px;
-@template-position: absolute;
-@template-top: 0;
 @template-left: 120px;
 
 // theme
@@ -24,5 +23,6 @@
 @box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
   0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
 
-// @layout-header-background: @disabled-active-bg;
-// @layout-body-background: @border-color-base;
+@layout-header-background: @disabled-active-bg;
+@layout-body-background: @box-shadow-base;
+//

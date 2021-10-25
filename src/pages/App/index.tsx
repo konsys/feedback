@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Template headerComponents={2}>
+        <Template>
           <Routes />
         </Template>
       </Switch>

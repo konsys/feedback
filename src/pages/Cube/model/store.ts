@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import { createDomain, guard } from "effector";
 import { rollDicesFetch } from "./api";
 import { TDices } from "./types";
@@ -30,6 +31,12 @@ rollDicesFx.pending.watch(() => {
 rollDicesFx.done.watch(({ result }) => {
   setDices(result);
   setTimeout(stopRolling, 800);
+});
+
+rollDicesFx.fail.watch(() => {
+  setTimeout(stopRolling, 0);
+  // TODO error type and message
+  notification.error({ message: "Ошибка сети" });
 });
 
 const isIdle = rollDicesFx.pending.map((pending) => !pending);
