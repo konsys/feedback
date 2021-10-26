@@ -100,8 +100,8 @@ export const user$ = UserDomain.store<IUser | null>(null)
   .on(getUserFx.done, (_, { result }) => result)
   .reset(logout);
 
-getUserFx.fail.watch((v: any) => {
-  setError(v);
+getUserFx.fail.watch(({ error }) => {
+  setError(error.message);
 });
 
 sample({
