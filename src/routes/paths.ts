@@ -1,16 +1,18 @@
 import { RouteProps } from "react-router";
 import Cube from "../pages/Cube";
+import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import TestCompomemt from "../pages/TestComponent";
 
 export enum EPath {
   TEST_PATH = "TEST_PATH",
-  CUBE = "CUBE",
+  DICES = "DICES",
+  LOGIN = "LOGIN",
   NOT_FOUND = "NOT_FOUND",
 }
 
 export const paths: Record<EPath, RouteProps> = {
-  CUBE: {
+  DICES: {
     path: "/",
     exact: true,
     component: Cube,
@@ -20,7 +22,11 @@ export const paths: Record<EPath, RouteProps> = {
     exact: true,
     component: TestCompomemt,
   },
-
+  LOGIN: {
+    path: "/login",
+    exact: true,
+    component: Login,
+  },
   NOT_FOUND: {
     path: "*",
     exact: false,
