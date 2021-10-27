@@ -5,6 +5,9 @@ import { useGate } from "effector-react";
 import { LoginGate } from "./model/store";
 
 export default function Login() {
+  const queryObj = queryString.parse(window.location.search);
+  const code = queryObj.code ? queryObj.code.toString() : "";
+
   const handleRedirect = () => {
     const params = {
       redirect_uri: "http://127.0.0.1:3000/login",
@@ -12,13 +15,14 @@ export default function Login() {
       scope: "email",
       display: "popup",
       v: 5.126,
+      response_type: "code",
       revoke: 1,
     };
     const stringified = queryString.stringify(params);
     window.location.href = `https://oauth.vk.com/authorize?${stringified}`;
   };
 
-  useGate(LoginGate);
+  useGate(LoginGate, { code });
 
   const comp = (
     <>

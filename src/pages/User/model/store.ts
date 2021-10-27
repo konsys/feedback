@@ -76,7 +76,6 @@ sample({
 });
 
 ProfileGate.state.watch((v) => console.log("Profile gate update", v));
-
 ProfileGate.close.watch(() => console.log("Profile gate closes"));
 
 export const setUser = UserDomain.event<IUser | null>();
