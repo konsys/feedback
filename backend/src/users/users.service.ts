@@ -3,9 +3,10 @@ import { FindManyOptions, In, Repository } from 'typeorm';
 import { UsersEntity } from 'src/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TUserCreds, TVkUserResponce, TVkToken } from './types';
-import queryString from 'query-string';
+import { stringify } from 'query-string';
 import { TokensEntity } from 'src/entities/tokens.entity';
 import { jwtConstants } from 'src/config';
+import fetch from 'node-fetch';
 
 //
 @Injectable()
@@ -107,12 +108,12 @@ export class UsersService {
       code,
       v: 5.126,
     };
-    const stringified = queryString.stringify(params);
 
-    const link = `https://oauth.vk.com/access_token?${stringified}`;
-    let response = await fetch(link);
+    const link = `https://oauth.vk.com/access_token?${stringify(params)}`;
+    const response = await fetch(link);
     const tokenData: TVkToken = JSON.parse(await response.text());
 
+    console.log(333333333333333, tokenData, code);
     const userData = {
       user_ids: tokenData.user_id,
       access_token: tokenData.access_token,
@@ -120,17 +121,25 @@ export class UsersService {
       fields: 'sex,bdate,photo_100,email',
       v: 5.126,
     };
-    const stringifiedUser = queryString.stringify(userData);
 
-    const userGet = `https://api.vk.com/method/users.get?${stringifiedUser}`;
+    const userGet = `https://api.vk.com/method/users.get?${stringify(
+      userData,
+    )}`;
 
-    response = await fetch(userGet);
-    const usersData: TVkUserResponce[] = JSON.parse(
-      await response.text(),
-    ).response;
+    const userResponse = await fetch(userGet);
 
-    const user = usersData && usersData.length ? usersData[0] : null;
+    const res: any = await userResponse.json();
+    if (res.error) {
+      console.log(11111111111, tokenData);
+    }
 
+    // try {
+    const usersData: TVkUserResponce[] = JSON.parse(res).response;
+    // } catch (error) {
+    //   console.log(11111111111, error);
+    // }
+    const user = userData && usersData.length ? usersData[0] : null;
+    userData;
     const isUser = await this.users.findOne({ vkId: user.id });
     let savedUser = null;
     if (user) {

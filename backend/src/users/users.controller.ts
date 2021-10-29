@@ -17,7 +17,7 @@ import { LocalAuthGuard } from 'src/modules/auth/local-auth.guard';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { JwtAuthGuard } from 'src/modules/auth/jwt-auth.guard';
 import { EControllersNames } from 'src/params/controllers.names';
-import { IRequestWithUser } from './types';
+import { IRequestWithUser, TTokens, TVkLoginRequest } from './types';
 import { IJwtPayload, jwtConstants } from 'src/config';
 
 @Controller(EControllersNames.USERS)
@@ -127,16 +127,10 @@ export class UsersController {
   @Post('login/vk')
   async loginVk(
     @Body()
-    { code }: { code: string },
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+    { code }: TVkLoginRequest,
+  ): Promise<TTokens> {
     const user = new UsersEntity(await this.service.loginVK(code));
-    const res = await this.authService.login({
-      email: user.email,
-      name: user.name,
-      password: user.password,
-      userId: user.userId,
-    });
-    return res;
+    return await this.authService.login(user);
   }
 
   @Delete('/:userId')

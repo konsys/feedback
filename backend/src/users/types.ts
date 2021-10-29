@@ -9,9 +9,9 @@ export interface IRequestWithUser extends ExpressRequest {
 
 export type TUserCreds = {
   email?: string;
-  name: string;
+  name?: string;
   password?: string;
-  userId: number;
+  userId?: number;
 };
 
 export type TVkUserResponce = {
@@ -32,3 +32,9 @@ export type TVkToken = {
   user_id: number;
   email?: string;
 };
+
+export type TVkLoginRequest = {
+  code: string;
+};
+
+export type TTokens = { accessToken: string; refreshToken: string };
