@@ -8,7 +8,7 @@ import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class AuthService {
   constructor(
-    // private usersService: UsersService,
+    private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
 
@@ -16,13 +16,12 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<UsersEntity | undefined> {
-    // const user = await this.usersService.getUserByCredentials({
-    //   email,
-    //   password,
-    // });
+    const user = await this.usersService.getUserByCredentials({
+      email,
+      password,
+    });
 
-    // return user && user.name ? user : undefined;
-    return Promise.resolve(undefined);
+    return user && user.name ? user : undefined;
   }
 
   createPayload(username: string, userId: number): IJwtPayload {
@@ -46,11 +45,11 @@ export class AuthService {
     const accessToken = await this.signJwt(payload);
     const refreshToken = await this.signJwt(payload, '60000s');
 
-    // await this.usersService.saveToken({
-    //   token: refreshToken,
-    //   userId: user.userId,
-    //   name: user.name,
-    // });
+    await this.usersService.saveToken({
+      token: refreshToken,
+      userId: user.userId,
+      name: user.name,
+    });
 
     return {
       accessToken,
