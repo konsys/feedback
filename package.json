@@ -5,7 +5,7 @@
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "antd": "^4.16.13",
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "effector": "^22.1.2",
     "effector-react": "^22.0.4",
     "node-fetch": "^3.0.0",

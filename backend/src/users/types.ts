@@ -38,3 +38,14 @@ export type TVkLoginRequest = {
 };
 
 export type TTokens = { accessToken: string; refreshToken: string };
+
+export type TVkTokenResponce = {
+  access_token: string;
+  email: string;
+  user_id: string;
+};
+
+export type TVkTokenError = {
+  error: string;
+  error_description: string;
+};

@@ -1,12 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { UsersEntity } from 'src/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TUserCreds, TVkUserResponce, TVkToken } from './types';
+import { TUserCreds, TVkUserResponce, TVkTokenResponce } from './types';
 import { stringify } from 'query-string';
 import { TokensEntity } from 'src/entities/tokens.entity';
 import { jwtConstants } from 'src/config';
 import fetch from 'node-fetch';
+import { client } from 'src/http/client';
+import { AxiosError } from 'axios';
 
 //
 @Injectable()
@@ -94,7 +96,7 @@ export class UsersService {
 
     return res && res.affected > 0 ? true : false;
   }
-
+  // https://vk.com/editapp?id=7988646
   async saveUsers(users: UsersEntity[]): Promise<UsersEntity[]> {
     const allUsers: UsersEntity[] = await this.users.save(users);
     return allUsers;
@@ -103,21 +105,32 @@ export class UsersService {
   async loginVK(code: string): Promise<UsersEntity | null> {
     const params = {
       redirect_uri: 'http://127.0.0.1:3000/login',
-      client_secret: 'tCN1UAM5eoVrBWtHSMw1',
-      client_id: 7731384,
+      client_secret: 'rCd8cviaoYS9AV1CyA8h',
+      client_id: 7988646,
       code,
       v: 5.126,
     };
 
     const link = `https://oauth.vk.com/access_token?${stringify(params)}`;
-    const response = await fetch(link);
-    const tokenData: TVkToken = JSON.parse(await response.text());
 
-    console.log(333333333333333, tokenData, code);
+    try {
+      const response = await client.get<TVkTokenResponce, TVkTokenResponce>(
+        link,
+      );
+    } catch (err) {
+      console.log(11111111, err, code);
+      if (err?.response?.data) {
+        throw new BadRequestException(err?.response?.data);
+      }
+      return;
+    }
+
+    const tokenData = {} as TVkTokenResponce;
+
     const userData = {
       user_ids: tokenData.user_id,
       access_token: tokenData.access_token,
-      client_id: 7731384,
+      client_id: 7988646,
       fields: 'sex,bdate,photo_100,email',
       v: 5.126,
     };
@@ -133,11 +146,8 @@ export class UsersService {
       console.log(11111111111, tokenData);
     }
 
-    // try {
     const usersData: TVkUserResponce[] = JSON.parse(res).response;
-    // } catch (error) {
-    //   console.log(11111111111, error);
-    // }
+
     const user = userData && usersData.length ? usersData[0] : null;
     userData;
     const isUser = await this.users.findOne({ vkId: user.id });
