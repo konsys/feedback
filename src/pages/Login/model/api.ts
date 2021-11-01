@@ -6,5 +6,7 @@ const URL = `/login`;
 export const loginFetch = async (params: ILoginForm) =>
   (await client.get<boolean>(URL, { params })).data;
 
-export const loginVkFetch = async (code: TVkCode) =>
-  (await client.post<TVkCode>("/users/login/vk", { code })).data;
+export const loginVkFetch = async (params: TVkCode) => {
+  const { code } = params;
+  return (await client.post<TVkCode>("/users/login/vk", { code })).data;
+};

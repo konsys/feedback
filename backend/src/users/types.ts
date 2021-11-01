@@ -39,7 +39,16 @@ export type TVkLoginRequest = {
 
 export type TTokens = { accessToken: string; refreshToken: string };
 
+export type TVkAuthResponse = {
+  access_token: string;
+  expires_in: number;
+};
+
 export type TVkTokenResponce = {
+  data: {
+    access_token: string;
+    expires_in: 0;
+  };
   access_token: string;
   email: string;
   user_id: string;

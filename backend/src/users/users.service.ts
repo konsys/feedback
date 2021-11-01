@@ -2,15 +2,13 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { UsersEntity } from 'src/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TUserCreds, TVkUserResponce, TVkTokenResponce } from './types';
+import { TUserCreds, TVkUserResponce, TVkAuthResponse } from './types';
 import { stringify } from 'query-string';
 import { TokensEntity } from 'src/entities/tokens.entity';
-import { jwtConstants } from 'src/config';
-import fetch from 'node-fetch';
+import { getVkAccessTokenRequest, jwtConstants, VkAppParams } from 'src/config';
 import { client } from 'src/http/client';
-import { AxiosError } from 'axios';
 
-//
+// rCd8cviaoYS9AV1CyA8h
 @Injectable()
 export class UsersService {
   private logger: Logger = new Logger('UsersService');
@@ -88,7 +86,9 @@ export class UsersService {
     });
 
     if (!user) {
+      throw new Error('No user found');
     }
+
     const res = await this.users.update(
       { registrationCode, email },
       { isActive: true },
@@ -96,50 +96,51 @@ export class UsersService {
 
     return res && res.affected > 0 ? true : false;
   }
-  // https://vk.com/editapp?id=7988646
   async saveUsers(users: UsersEntity[]): Promise<UsersEntity[]> {
     const allUsers: UsersEntity[] = await this.users.save(users);
     return allUsers;
   }
 
   async loginVK(code: string): Promise<UsersEntity | null> {
-    const params = {
-      redirect_uri: 'http://127.0.0.1:3000/login',
-      client_secret: 'rCd8cviaoYS9AV1CyA8h',
-      client_id: 7988646,
-      code,
-      v: 5.126,
-    };
+    console.log(44444444, code);
 
-    const link = `https://oauth.vk.com/access_token?${stringify(params)}`;
+    const { serviceKey } = VkAppParams;
+
+    const link = `${VkAppParams.tokenURL}${stringify(
+      getVkAccessTokenRequest(code),
+    )}`;
+
+    let tokenData = {} as TVkAuthResponse;
 
     try {
-      const response = await client.get<TVkTokenResponce, TVkTokenResponce>(
-        link,
-      );
+      tokenData = (await client.get<TVkAuthResponse>(link)).data;
     } catch (err) {
-      console.log(11111111, err, code);
+      console.log(8888888, err?.response?.data);
       if (err?.response?.data) {
         throw new BadRequestException(err?.response?.data);
       }
-      return;
+      throw new BadRequestException('Auth error');
     }
 
-    const tokenData = {} as TVkTokenResponce;
-
     const userData = {
-      user_ids: tokenData.user_id,
-      access_token: tokenData.access_token,
-      client_id: 7988646,
-      fields: 'sex,bdate,photo_100,email',
-      v: 5.126,
+      // user_ids: tokenData.user_id,
+      access_token: serviceKey,
+      // access_token: tokenData.access_token,
+      // client_id,
+      // fields: 'sex,bdate,photo_100,email',
+      fields: 'email',
+      // v,
     };
 
-    const userGet = `https://api.vk.com/method/users.get?${stringify(
+    const userGetLink = `https://api.vk.com/method/users.get?${stringify(
       userData,
     )}`;
 
-    const userResponse = await fetch(userGet);
+    console.log(1111111, (await client.get<any>(userGetLink)).data);
+
+    const userResponse = (await client.get<any>(userGetLink)).data;
+
+    console.log(33333333, userGetLink);
 
     const res: any = await userResponse.json();
     if (res.error) {
@@ -165,7 +166,7 @@ export class UsersService {
           sex: user.sex,
           vip: false,
           vkId: user.id,
-          email: tokenData.email || null,
+          email: null,
         });
       } else if (isUser && isUser.userId) {
         await this.users.update(
@@ -180,7 +181,7 @@ export class UsersService {
             isBlocked: false,
             sex: user.sex,
             vip: false,
-            email: tokenData.email || null,
+            email: null,
           },
         );
         savedUser = await this.users.findOne({ vkId: user.id });
