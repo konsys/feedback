@@ -16,7 +16,7 @@ export const SERVICE_KEY =
   '4c50ac0f4c50ac0f4c50ac0fcb4c2949a944c504c50ac0f2d2d39e36f0f21c655cf43c1';
 export const VK_API_VERSION = 5.131;
 export const VK_TOKEN_URL = 'http://oauth.vk.com/access_token?';
-export const REDIRECT_URI = 'http://localhost:3000';
+export const REDIRECT_URI = 'http://127.0.0.1:3000/login';
 
 type VkResponseType = 'code';
 type TDisplayVkOauth = 'page' | 'popup' | 'mobile';
@@ -49,6 +49,20 @@ export type TVkAppParams = {
   client_id: number;
 };
 
+export type TVkUserGetRequest = {
+  user_ids: number;
+  access_token: string;
+  client_id: number;
+  fields: string;
+  v: number;
+};
+
+export type TVkGetUserParams = {
+  fields: string;
+  access_token: string;
+  userId: number;
+};
+
 export const jwtConstants: IJwtSettings = {
   secret: 'secretKey',
   expires: '600s', // 10 minutes
@@ -56,7 +70,7 @@ export const jwtConstants: IJwtSettings = {
 };
 
 export const VkOAuthParams: TVkOAuthParams = {
-  redirect_uri: 'http://127.0.0.1:3000/login',
+  redirect_uri: REDIRECT_URI,
   display: 'popup',
   response_type: 'code',
   scope: 4,
@@ -64,7 +78,6 @@ export const VkOAuthParams: TVkOAuthParams = {
 };
 
 export const VkAppParams: TVkAppParams = {
-  // code: '',
   client_id: CLIENT_ID,
   client_secret: CLIENT_SECRET,
   code: '',
@@ -79,9 +92,25 @@ export const VkAppParams: TVkAppParams = {
 
 export const getVkAccessTokenRequest = (
   code: string,
-): TVkAccessTokenRequest => ({
-  code,
-  client_id: CLIENT_ID,
-  client_secret: CLIENT_SECRET,
-  redirect_uri: REDIRECT_URI,
-});
+): TVkAccessTokenRequest => {
+  return {
+    code,
+    client_id: CLIENT_ID,
+    client_secret: CLIENT_SECRET,
+    redirect_uri: REDIRECT_URI,
+  };
+};
+
+export const getVkGetUserRequest = ({
+  access_token,
+  fields,
+  userId,
+}: TVkGetUserParams): TVkUserGetRequest => {
+  return {
+    access_token,
+    client_id: CLIENT_ID,
+    fields,
+    user_ids: userId,
+    v: VK_API_VERSION,
+  };
+};

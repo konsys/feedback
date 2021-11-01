@@ -1,5 +1,7 @@
+import { REDIRECT_URI } from "../pages/Login/model/types";
+
 export enum Params {
-  BASE_URL = "http://localhost:8000",
+  BASE_URL = "http://127.0.0.1:8000",
 }
 
 type VkResponseType = "code";
@@ -16,7 +18,7 @@ export type TVkConstants = {
 };
 
 export const VkOAuthParams: TVkConstants = {
-  redirect_uri: "http://127.0.0.1:3000/login",
+  redirect_uri: REDIRECT_URI,
   client_id: 7988646,
   scope: "email",
   display: "popup",

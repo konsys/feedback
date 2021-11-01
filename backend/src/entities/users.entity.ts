@@ -30,7 +30,7 @@ export class UsersEntity {
   firstName?: string;
 
   @Exclude()
-  @Column()
+  @Column({ default: null })
   @Index({ unique: true })
   email?: string;
 

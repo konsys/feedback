@@ -42,16 +42,30 @@ export type TTokens = { accessToken: string; refreshToken: string };
 export type TVkAuthResponse = {
   access_token: string;
   expires_in: number;
+  user_id: number;
+  email: string | null;
 };
 
-export type TVkTokenResponce = {
-  data: {
-    access_token: string;
-    expires_in: 0;
-  };
-  access_token: string;
-  email: string;
-  user_id: string;
+export enum EVkSex {
+  'нет',
+  'жен',
+  'муж',
+}
+
+export type TVkGetUser = {
+  first_name: string;
+  id: number;
+  last_name: string;
+  can_access_closed: boolean;
+  is_closed: boolean;
+  sex: EVkSex;
+  photo_100: string;
+  bdate: string;
+  email?: string | null;
+};
+
+export type TVkGetUserResponce = {
+  response: TVkGetUser[];
 };
 
 export type TVkTokenError = {

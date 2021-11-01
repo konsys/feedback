@@ -2,10 +2,20 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { UsersEntity } from 'src/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TUserCreds, TVkUserResponce, TVkAuthResponse } from './types';
+import {
+  TUserCreds,
+  TVkUserResponce,
+  TVkAuthResponse,
+  TVkGetUserResponce,
+} from './types';
 import { stringify } from 'query-string';
 import { TokensEntity } from 'src/entities/tokens.entity';
-import { getVkAccessTokenRequest, jwtConstants, VkAppParams } from 'src/config';
+import {
+  getVkAccessTokenRequest,
+  getVkGetUserRequest,
+  jwtConstants,
+  VkAppParams,
+} from 'src/config';
 import { client } from 'src/http/client';
 
 // rCd8cviaoYS9AV1CyA8h
@@ -102,8 +112,6 @@ export class UsersService {
   }
 
   async loginVK(code: string): Promise<UsersEntity | null> {
-    console.log(44444444, code);
-
     const { serviceKey } = VkAppParams;
 
     const link = `${VkAppParams.tokenURL}${stringify(
@@ -115,42 +123,30 @@ export class UsersService {
     try {
       tokenData = (await client.get<TVkAuthResponse>(link)).data;
     } catch (err) {
-      console.log(8888888, err?.response?.data);
       if (err?.response?.data) {
         throw new BadRequestException(err?.response?.data);
       }
       throw new BadRequestException('Auth error');
     }
 
-    const userData = {
-      // user_ids: tokenData.user_id,
-      access_token: serviceKey,
-      // access_token: tokenData.access_token,
-      // client_id,
-      // fields: 'sex,bdate,photo_100,email',
-      fields: 'email',
-      // v,
-    };
-
     const userGetLink = `https://api.vk.com/method/users.get?${stringify(
-      userData,
+      getVkGetUserRequest({
+        access_token: tokenData.access_token,
+        fields: 'sex,bdate,photo_100,email',
+        userId: tokenData.user_id,
+      }),
     )}`;
 
-    console.log(1111111, (await client.get<any>(userGetLink)).data);
+    console.log(
+      1111111,
+      (await client.get<TVkGetUserResponce>(userGetLink)).data,
+    );
 
-    const userResponse = (await client.get<any>(userGetLink)).data;
+    // TODO доделать получение данных по авторизируемому пользователю
+    const user = (
+      await client.get<TVkGetUserResponce>(userGetLink)
+    ).data.response.pop();
 
-    console.log(33333333, userGetLink);
-
-    const res: any = await userResponse.json();
-    if (res.error) {
-      console.log(11111111111, tokenData);
-    }
-
-    const usersData: TVkUserResponce[] = JSON.parse(res).response;
-
-    const user = userData && usersData.length ? usersData[0] : null;
-    userData;
     const isUser = await this.users.findOne({ vkId: user.id });
     let savedUser = null;
     if (user) {
