@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Template isLoggedIn={!!user?.name ?? false}>
+        <Template user={user}>
           <Routes />
         </Template>
       </Switch>

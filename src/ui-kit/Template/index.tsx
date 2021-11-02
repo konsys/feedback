@@ -1,15 +1,18 @@
-import { Button, Card, Layout } from "antd";
+import { Avatar, Button, Card, Layout, Space } from "antd";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import LoginButton from "../../pages/Login";
 import { logout } from "../../pages/User/model/store";
+import { IUser } from "../../pages/User/model/types";
+
 import ContentBlock from "../ContentBlock";
 import Wrapper from "../Wrapper";
 
 interface Props {
-  isLoggedIn: boolean;
+  user: IUser | null;
   children?: ReactNode;
 }
-export default function Template({ children, isLoggedIn }: Props) {
+export default function Template({ children, user }: Props) {
   return (
     <Wrapper>
       <Layout>
@@ -17,10 +20,17 @@ export default function Template({ children, isLoggedIn }: Props) {
           title={<Link to="/">Кости</Link>}
           style={{ height: "100%" }}
           extra={
-            !isLoggedIn ? (
-              <Link to="/login">Войти</Link>
+            !user ? (
+              <LoginButton />
             ) : (
-              <Button onClick={() => logout()}>Выйти</Button>
+              <>
+                <Space>
+                  <Avatar src={user.avatar} alt={user.name} />
+                  <Button type="primary" onClick={() => logout()}>
+                    Выйти
+                  </Button>
+                </Space>
+              </>
             )
           }
         >

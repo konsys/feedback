@@ -5,7 +5,7 @@ import { useGate } from "effector-react";
 import { LoginGate } from "./model/store";
 import { VkOAuthParams } from "../../config/params";
 
-export default function Login() {
+export default function LoginButton() {
   const queryObj = queryString.parse(window.location.search);
   const code = queryObj.code ? queryObj.code.toString() : "";
 
@@ -20,6 +20,7 @@ export default function Login() {
       v,
       oauthURL,
     } = VkOAuthParams;
+
     const params = {
       redirect_uri,
       client_id,
@@ -37,7 +38,9 @@ export default function Login() {
 
   const comp = (
     <>
-      <Button onClick={handleRedirect}>Войти через ВКонтакте</Button>
+      <Button type="primary" onClick={handleRedirect}>
+        Войти через ВКонтакте
+      </Button>
     </>
   );
 

@@ -29,6 +29,7 @@ export interface IUserRegistration {
 export type TUser = {
   firstName: string;
   lastName: string;
+  avatar: string;
   patronymic: string;
   loggedIn: boolean;
   permissions?: any;
