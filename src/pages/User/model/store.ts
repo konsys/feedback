@@ -22,7 +22,6 @@ import { setError } from "../../../core/errors";
 const UserDomain = createDomain("UserDomain");
 
 export const ProfileGate = createGate();
-
 export const getProfileFx = UserDomain.effect<number, IUser, Error>({
   handler: fetchUserProfile,
 });

@@ -2,12 +2,7 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { UsersEntity } from 'src/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  TUserCreds,
-  TVkUserResponce,
-  TVkAuthResponse,
-  TVkGetUserResponce,
-} from './types';
+import { TUserCreds, TVkAuthResponse, TVkGetUserResponce } from './types';
 import { stringify } from 'query-string';
 import { TokensEntity } from 'src/entities/tokens.entity';
 import {
@@ -119,7 +114,6 @@ export class UsersService {
     )}`;
 
     let tokenData = {} as TVkAuthResponse;
-
     try {
       tokenData = (await client.get<TVkAuthResponse>(link)).data;
     } catch (err) {
@@ -136,11 +130,6 @@ export class UsersService {
         userId: tokenData.user_id,
       }),
     )}`;
-
-    console.log(
-      1111111,
-      (await client.get<TVkGetUserResponce>(userGetLink)).data,
-    );
 
     // TODO доделать получение данных по авторизируемому пользователю
     const user = (
@@ -204,7 +193,7 @@ export class UsersService {
     const expires = new Date();
     expires.setSeconds(expires.getSeconds() + jwtConstants.refreshExpires);
 
-    const saveToken: TokensEntity = {
+    const tokenToSave: TokensEntity = {
       userId,
       name,
       expires,
@@ -212,8 +201,9 @@ export class UsersService {
     };
 
     let res = null;
+
     try {
-      res = await this.tokens.save(saveToken);
+      res = await this.tokens.save(tokenToSave);
     } catch (err) {
       res = await this.tokens.update({ userId }, { expires, token });
     }

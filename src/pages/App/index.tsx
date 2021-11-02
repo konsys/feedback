@@ -3,10 +3,11 @@ import { Switch } from "react-router";
 import Template from "../../ui-kit/Template";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "../../routes";
-import { useStore } from "effector-react";
-import { user$ } from "../User/model/store";
+import { useGate, useStore } from "effector-react";
+import { ProfileGate, user$ } from "../User/model/store";
 
 function App() {
+  useGate(ProfileGate);
   const user = useStore(user$);
   return (
     <BrowserRouter>
