@@ -1,10 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { NOUNS } from './nouns';
+import { NounsService } from './nouns.service';
 
 @Controller('nouns')
 export class NounsController {
+  constructor(private readonly nounsService: NounsService) {}
+
   @Get()
-  findAll(): string {
-    return NOUNS.join(', ');
+  async findAll() {
+    return await this.nounsService.saveNounsToDB();
   }
 }
