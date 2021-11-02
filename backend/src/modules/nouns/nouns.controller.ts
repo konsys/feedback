@@ -1,5 +1,4 @@
 import { Controller, Get } from '@nestjs/common';
-import { NOUNS } from './nouns';
 import { NounsService } from './nouns.service';
 
 @Controller('nouns')
@@ -8,6 +7,6 @@ export class NounsController {
 
   @Get()
   async findAll() {
-    return await this.nounsService.saveNounsToDB();
+    return await this.nounsService.getNounByLength(3);
   }
 }

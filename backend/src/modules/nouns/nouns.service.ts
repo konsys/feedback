@@ -11,29 +11,28 @@ export class NounsService {
     private readonly nounsRepository: Repository<NounsEntity>,
   ) {}
 
-  async saveNounsToDB() {
+  async getNounByLength(length: number) {
+    try {
+      await this.saveNouns();
+    } catch (err) {
+      console.log(22222222, err);
+      // NOP
+    }
+    return await this.nounsRepository.findAndCount({ length });
+  }
+
+  private async saveNouns() {
     const fncs = [];
-    const nounsMap: Partial<NounsEntity>[] = NOUNS.map((value) => {
-      fncs.push(
-        this.nounsRepository.save({
-          value,
-          length: value.length,
-        }),
-      );
-      return {
+    NOUNS.map((value: string) => {
+      const t: Partial<NounsEntity> = {
         value,
         length: value.length,
+        firstLetter: value.slice(0, 1),
+        endLetter: value.slice(value.length - 1, value.length),
       };
+      fncs.push(this.nounsRepository.save(t));
     });
 
     await Promise.all(fncs);
-
-    // try {
-    //   await this.nounsRepository.save(nounsMap);
-    // } catch (err) {
-    //   console.log(22222222, err);
-    //   // NOP
-    // }
-    return await this.nounsRepository.findOne(2);
   }
 }
