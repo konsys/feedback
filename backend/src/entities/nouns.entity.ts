@@ -4,7 +4,6 @@ import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
 export class NounsEntity {
   @Column()
   @PrimaryColumn()
-  @Index({ unique: true })
   nounId: number;
 
   @Column()
