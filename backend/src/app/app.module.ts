@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DicesModule } from 'src/dices/dices.module';
+import { DicesModule } from 'src/modules/dices/dices.module';
 import { UsersModule } from 'src/users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
