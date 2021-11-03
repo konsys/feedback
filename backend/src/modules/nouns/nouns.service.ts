@@ -12,12 +12,6 @@ export class NounsService {
   ) {}
 
   async getNounByLength(length: number) {
-    try {
-      await this.saveNouns();
-    } catch (err) {
-      console.log(22222222, err);
-      // NOP
-    }
     return await this.nounsRepository.findAndCount({ length });
   }
 

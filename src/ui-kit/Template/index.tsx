@@ -1,4 +1,5 @@
 import { Avatar, Button, Card, Layout, Space } from "antd";
+import Text from "antd/lib/typography/Text";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import LoginButton from "../../pages/Login";
@@ -25,8 +26,9 @@ export default function Template({ children, user }: Props) {
             ) : (
               <>
                 <Space>
+                  <Text type="secondary">{user.name}</Text>
                   <Avatar src={user.avatar} alt={user.name} />
-                  <Button type="primary" onClick={() => logout()}>
+                  <Button type="link" onClick={() => logout()}>
                     Выйти
                   </Button>
                 </Space>

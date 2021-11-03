@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   postgres:
+    container_name: pg_container
     image: postgres:13.3
     environment:
       POSTGRES_DB: 'mnpl'
@@ -16,6 +17,6 @@ services:
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - '5050:80'
