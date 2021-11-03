@@ -2,7 +2,7 @@ import { Avatar, Button, Card, Layout, Space } from "antd";
 import Text from "antd/lib/typography/Text";
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import LoginButton from "../../pages/Login";
+import LoginButton from "../../pages/Login/LoginButton";
 import { logout } from "../../pages/User/model/store";
 import { IUser } from "../../pages/User/model/types";
 

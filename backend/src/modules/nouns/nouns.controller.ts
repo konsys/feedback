@@ -7,7 +7,6 @@ export class NounsController {
 
   @Get(':id')
   async findOne(@Param() { id }: { id: number }) {
-    console.log(1111111111, id);
     return await this.nounsService.getNounByLength(id);
   }
 }
