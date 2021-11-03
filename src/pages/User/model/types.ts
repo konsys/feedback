@@ -26,15 +26,6 @@ export interface IUserRegistration {
   password?: string;
 }
 
-export type TUser = {
-  firstName: string;
-  lastName: string;
-  avatar: string;
-  patronymic: string;
-  loggedIn: boolean;
-  permissions?: any;
-};
-
 export interface LoginRequest {
   username: string;
   password: string;

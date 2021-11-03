@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { LoginRequest, TUser } from "../../pages/User/model/types";
+import { IUser, LoginRequest } from "../../pages/User/model/types";
 import { client } from "../Clients";
 import { Paths } from "../Clients/paths";
 
@@ -18,11 +18,11 @@ interface AuthResponse {
   tokenExpireIn: string;
   refreshToken: string;
   refreshTokenExpiresIn: string | null;
-  profile: TUser;
+  profile: IUser;
 }
 
 export class Auth {
-  public static initialize(): Promise<TUser> {
+  public static initialize(): Promise<IUser> {
     if (!Auth.accessToken) {
       return Promise.reject(new Error());
     } else if (Auth.isAccessTokenExpired()) {
@@ -37,7 +37,7 @@ export class Auth {
     username,
     password,
     saveCredentials,
-  }: LoginRequest): Promise<TUser> {
+  }: LoginRequest): Promise<IUser> {
     const req = { username, password };
     const authResponse = await client.post(`${Paths.auth}/pwd`, req);
     const auth = authResponse.data as AuthResponse;
@@ -53,7 +53,7 @@ export class Auth {
     Auth.cleanAuthHeaders();
   }
 
-  public static async loadUser(): Promise<TUser> {
+  public static async loadUser(): Promise<IUser> {
     return await client.get(Paths.user);
   }
 
