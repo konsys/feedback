@@ -1,4 +1,5 @@
 import { Typography } from "antd";
+import { cyan } from "@ant-design/colors";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Nullable } from "../../../core/types";
@@ -12,7 +13,13 @@ interface Props {
 export const LoginComponent = ({ user }: Props) => {
   const comp = (
     <>
-      {!user ? <Title level={4}>Вход</Title> : <Link to="/">Начать игру</Link>}
+      {!user ? (
+        <Title level={4}>Вход</Title>
+      ) : (
+        <Link to="/" color={cyan[4]}>
+          Начать игру
+        </Link>
+      )}
     </>
   );
 
