@@ -19,7 +19,7 @@ export class NounsService {
 
   async generateLinkedWordsSquare(width: number) {
     if (width > MAX_WIDTH || width < 0) {
-      throw new BadRequestException('Wrong width');
+      throw new BadRequestException(`Width > ${MAX_WIDTH} or < 0`);
     }
 
     let position: IPosition = {

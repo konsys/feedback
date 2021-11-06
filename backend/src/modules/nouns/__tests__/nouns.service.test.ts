@@ -8,7 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
-import { NounsService, IPosition } from '../nouns.service';
+import { NounsService } from '../nouns.service';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
@@ -139,5 +139,11 @@ describe('TestservicepackService', () => {
       width: 10,
     });
     expect(res).toStrictEqual(['6-5', '4-5', '5-6', '5-4']);
+  });
+
+  it('generateLinkedWordsSquare tests', async () => {
+    const res = await service.generateLinkedWordsSquare(5);
+
+    expect(res).toStrictEqual(8);
   });
 });
