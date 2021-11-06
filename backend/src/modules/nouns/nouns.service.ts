@@ -4,34 +4,7 @@ import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
 
-const LETTERS = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
-];
+const MAX_WIDTH = 10;
 
 @Injectable()
 export class NounsService {
@@ -45,31 +18,24 @@ export class NounsService {
   }
 
   async generateLinkedWordsSquare(width: number) {
-    if (width > LETTERS.length || width < 0) {
+    if (width > MAX_WIDTH || width < 0) {
       throw new BadRequestException('Wrong width');
     }
 
     let position: IPosition = {
-      widthCornerCaseStart: false,
-      widthCornerCaseEnd: false,
-      heightCornerCaseStart: false,
-      heightCornerCaseEnd: false,
-      heightPosition: 0,
-      widthPosition: 0,
+      width: 0,
+      yPosition: 0,
+      xPosition: 0,
     };
 
     let lettersField = {};
-    for (let widthPosition = 0; widthPosition < width; widthPosition++) {
-      for (let heightPosition = 0; heightPosition < width; heightPosition++) {
-        lettersField[`${LETTERS[widthPosition]}${heightPosition}`] =
-          this.createWordsDirections({
-            heightCornerCaseEnd: heightPosition === LETTERS.length,
-            heightCornerCaseStart: heightPosition === 0,
-            heightPosition,
-            widthPosition,
-            widthCornerCaseEnd: widthPosition === LETTERS.length,
-            widthCornerCaseStart: widthPosition === 0,
-          });
+    for (let xPosition = 0; xPosition < width; xPosition++) {
+      for (let yPosition = 0; yPosition < width; yPosition++) {
+        lettersField[`${xPosition}-${yPosition}`] = this.createWordsDirections({
+          yPosition,
+          xPosition,
+          width,
+        });
       }
     }
     return lettersField;
@@ -98,30 +64,62 @@ export class NounsService {
     return Math.random() * (max - min) + min;
   }
 
-  private createWordsDirections(position: IPosition) {
-    let res = [];
-
-    if (position.widthCornerCaseStart && position.heightCornerCaseStart) {
-      res.concat([
-        `${LETTERS[position.widthPosition + 1]}${position.heightPosition}`,
-        `${LETTERS[position.widthPosition]}${position.heightPosition + 1}`,
-      ]);
-    } else if (position.widthCornerCaseStart && position.heightCornerCaseEnd) {
-      res.concat([
-        `${LETTERS[position.widthPosition + 1]}${position.heightPosition}`,
-        `${LETTERS[position.widthPosition]}${position.heightPosition - 1}`,
-      ]);
+  public createWordsDirections(position: IPosition) {
+    if (position.xPosition === 0 && position.yPosition === 0) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+      ];
+    } else if (
+      position.xPosition === position.width - 1 &&
+      position.yPosition === 0
+    ) {
+      return [
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+      ];
+    } else if (
+      position.xPosition === 0 &&
+      position.yPosition === position.width - 1
+    ) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
+      ];
+    } else if (
+      position.xPosition === position.width - 1 &&
+      position.yPosition === position.width - 1
+    ) {
+      return [
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
+      ];
+    } else if (
+      position.xPosition > 0 &&
+      position.xPosition < position.width - 1 &&
+      position.yPosition === 0
+    ) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+      ];
+    } else if (
+      position.xPosition === 0 &&
+      position.yPosition > 0 &&
+      position.yPosition < position.width - 1
+    ) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+      ];
     }
-
-    return [];
   }
 }
 
-interface IPosition {
-  widthPosition: number;
-  heightPosition: number;
-  widthCornerCaseEnd: boolean;
-  widthCornerCaseStart: boolean;
-  heightCornerCaseEnd: boolean;
-  heightCornerCaseStart: boolean;
+export interface IPosition {
+  xPosition: number;
+  yPosition: number;
+  width: number;
 }
