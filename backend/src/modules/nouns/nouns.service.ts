@@ -111,8 +111,40 @@ export class NounsService {
     ) {
       return [
         `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
+      ];
+    } else if (
+      position.xPosition > 0 &&
+      position.xPosition < position.width - 1 &&
+      position.yPosition === position.width - 1
+    ) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
+      ];
+    } else if (
+      position.xPosition === position.width - 1 &&
+      position.yPosition > 0 &&
+      position.yPosition < position.width - 1
+    ) {
+      return [
         `${position.xPosition - 1}-${position.yPosition}`,
         `${position.xPosition}-${position.yPosition + 1}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
+      ];
+    } else if (
+      position.xPosition > 0 &&
+      position.xPosition < position.width - 1 &&
+      position.yPosition > 0 &&
+      position.yPosition < position.width - 1
+    ) {
+      return [
+        `${position.xPosition + 1}-${position.yPosition}`,
+        `${position.xPosition - 1}-${position.yPosition}`,
+        `${position.xPosition}-${position.yPosition + 1}`,
+        `${position.xPosition}-${position.yPosition - 1}`,
       ];
     }
   }

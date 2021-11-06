@@ -111,6 +111,33 @@ describe('TestservicepackService', () => {
       yPosition: 5,
       width: 10,
     });
-    expect(res).toStrictEqual(['0-5', '0-4', '0-6']);
+    expect(res).toStrictEqual(['1-5', '0-6', '0-4']);
+  });
+
+  it('createWordsDirections tests', () => {
+    const res = service.createWordsDirections({
+      xPosition: 5,
+      yPosition: 9,
+      width: 10,
+    });
+    expect(res).toStrictEqual(['6-9', '4-9', '5-8']);
+  });
+
+  it('createWordsDirections tests', () => {
+    const res = service.createWordsDirections({
+      xPosition: 9,
+      yPosition: 5,
+      width: 10,
+    });
+    expect(res).toStrictEqual(['8-5', '9-6', '9-4']);
+  });
+
+  it('createWordsDirections tests', () => {
+    const res = service.createWordsDirections({
+      xPosition: 5,
+      yPosition: 5,
+      width: 10,
+    });
+    expect(res).toStrictEqual(['6-5', '4-5', '5-6', '5-4']);
   });
 });
