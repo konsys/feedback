@@ -9,12 +9,18 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NounsService } from '../nouns.service';
+import {
+  createWordsDirections,
+  generateLinkedWordsSquare,
+  getEmptyRandomArrayIndex,
+} from '../utils';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
 };
 
-//
+let words = {};
+
 const repositoryMockFactory: () => MockType<Repository<NounsEntity>> = jest.fn(
   () => ({
     findAndCount: jest.fn((entity) => entity),
@@ -61,7 +67,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 0,
       yPosition: 0,
       width: 10,
@@ -70,7 +76,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 9,
       yPosition: 0,
       width: 10,
@@ -79,7 +85,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 0,
       yPosition: 9,
       width: 10,
@@ -88,7 +94,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 9,
       yPosition: 9,
       width: 10,
@@ -97,7 +103,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 5,
       yPosition: 0,
       width: 10,
@@ -106,7 +112,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 0,
       yPosition: 5,
       width: 10,
@@ -115,7 +121,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 5,
       yPosition: 9,
       width: 10,
@@ -124,7 +130,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 9,
       yPosition: 5,
       width: 10,
@@ -133,7 +139,7 @@ describe('TestservicepackService', () => {
   });
 
   it('createWordsDirections tests', () => {
-    const res = service.createWordsDirections({
+    const res = createWordsDirections({
       xPosition: 5,
       yPosition: 5,
       width: 10,
@@ -141,9 +147,28 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['6-5', '4-5', '5-6', '5-4']);
   });
 
-  it('generateLinkedWordsSquare tests', async () => {
-    const res = await service.generateLinkedWordsSquare(5);
+  it('randomProperty tests', async () => {
+    const width = 5;
+    const squareArray = generateLinkedWordsSquare(width);
 
-    expect(res).toStrictEqual(8);
+    const randomIndex = getEmptyRandomArrayIndex(squareArray);
+
+    expect(randomIndex).not.toBeGreaterThan(squareArray.length - 1);
+
+    const el = squareArray[randomIndex];
+    squareArray[randomIndex] = {
+      ...el,
+      value: 'a',
+    };
+
+    const directions = createWordsDirections({
+      width,
+      xPosition: el.x,
+      yPosition: el.y,
+    });
+    // const availableDirections = squareObject[randomKey];
+    // const nextSquare = getRandomArrayElement(availableDirections);
+    expect(squareArray).toStrictEqual(1);
+    expect(directions).toStrictEqual(1);
   });
 });
