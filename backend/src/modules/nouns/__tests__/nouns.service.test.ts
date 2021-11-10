@@ -7,6 +7,7 @@ import {
   getAvailableDirections,
   generateLinkedWordsSquare,
   getEmptyRandomArrayIndex,
+  getRandomDirectionn,
 } from '../utils';
 
 export type MockType<T> = {
@@ -151,13 +152,19 @@ describe('TestservicepackService', () => {
 
     const word = 'sport';
 
-    for (let i = 0; i < word.length; i++) {
-      const availableDirections = getAvailableDirections({
-        width,
-        xPosition: el.x,
-        yPosition: el.y,
-      });
+    squareArray[randomIndex] = {
+      ...squareArray[randomIndex],
+      value: word[0],
+    };
+    const availableDirections = getAvailableDirections({
+      width,
+      xPosition: el.x,
+      yPosition: el.y,
+    });
 
+    let direction = getRandomDirectionn(availableDirections);
+
+    for (let i = 1; i < word.length; i++) {
       // const nextSquare = getAvailableDirections(availableDirections);
       // nextSquare;
     }
