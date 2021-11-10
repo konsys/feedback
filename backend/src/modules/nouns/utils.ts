@@ -108,20 +108,19 @@ export function generateLinkedWordsSquare(width: number): IPositionValue[] {
         x: xPosition,
         y: yPosition,
       });
-
-      if (xPosition !== 3 && yPosition !== 3) {
-        lettersField[`${xPosition}-${yPosition}`] = null;
-      } else {
-        lettersField[`${xPosition}-${yPosition}`] = 'ddd';
-      }
     }
   }
   return lettersField;
 }
 
-export function getRandomArrayElement(arr: string[]) {
+export function getRandomArrayElement<T>(arr: T[]): T {
   const randIndex = getRandomArbitrary(0, arr.length - 1);
   return arr[randIndex];
+}
+
+export function getRandomPosition<T extends string>(arr: T[]): number[] {
+  const randIndex = getRandomArbitrary(0, arr.length - 1);
+  return arr[randIndex].split('-').map((v) => Number(v));
 }
 
 export function getEmptyRandomArrayIndex(arr: IPositionValue[]) {

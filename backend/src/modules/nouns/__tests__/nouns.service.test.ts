@@ -13,6 +13,8 @@ import {
   createWordsDirections,
   generateLinkedWordsSquare,
   getEmptyRandomArrayIndex,
+  getRandomArrayElement,
+  getRandomPosition,
 } from '../utils';
 
 export type MockType<T> = {
@@ -156,19 +158,17 @@ describe('TestservicepackService', () => {
     expect(randomIndex).not.toBeGreaterThan(squareArray.length - 1);
 
     const el = squareArray[randomIndex];
-    squareArray[randomIndex] = {
-      ...el,
-      value: 'a',
-    };
 
-    const directions = createWordsDirections({
+    const availableDirections = createWordsDirections({
       width,
       xPosition: el.x,
       yPosition: el.y,
     });
-    // const availableDirections = squareObject[randomKey];
-    // const nextSquare = getRandomArrayElement(availableDirections);
-    expect(squareArray).toStrictEqual(1);
-    expect(directions).toStrictEqual(1);
+
+    const nextSquare = getRandomPosition(availableDirections);
+
+    expect(nextSquare).toStrictEqual(1);
+    expect(availableDirections).toStrictEqual(1);
+    expect(availableDirections).toStrictEqual(1);
   });
 });
