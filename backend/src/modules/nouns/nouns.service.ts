@@ -31,14 +31,14 @@ export class NounsService {
   }
 }
 
-export interface IPosition {
+export type TPosition = {
   xPosition: number;
   yPosition: number;
   width: number;
-}
+};
 
-export interface IPositionValue {
+export type TPositionValue = {
   x: number;
   y: number;
   value: string | null;
-}
+};

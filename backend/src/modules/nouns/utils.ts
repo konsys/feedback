@@ -1,9 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
-import { IPosition, IPositionValue } from './nouns.service';
+import { TPosition, TPositionValue } from './nouns.service';
 
 const MAX_WIDTH = 10;
 
-export function createWordsDirections(position: IPosition) {
+export function getAvailableDirections(position: TPosition) {
   if (position.xPosition === 0 && position.yPosition === 0) {
     return [
       `${position.xPosition + 1}-${position.yPosition}`,
@@ -88,16 +88,10 @@ export function createWordsDirections(position: IPosition) {
   }
 }
 
-export function generateLinkedWordsSquare(width: number): IPositionValue[] {
+export function generateLinkedWordsSquare(width: number): TPositionValue[] {
   if (width > MAX_WIDTH || width < 0) {
     throw new BadRequestException(`Width > ${MAX_WIDTH} or < 0`);
   }
-
-  let position: IPosition = {
-    width: 0,
-    yPosition: 0,
-    xPosition: 0,
-  };
 
   let lettersField = [];
 
@@ -123,7 +117,7 @@ export function getRandomPosition<T extends string>(arr: T[]): number[] {
   return arr[randIndex].split('-').map((v) => Number(v));
 }
 
-export function getEmptyRandomArrayIndex(arr: IPositionValue[]) {
+export function getEmptyRandomArrayIndex(arr: TPositionValue[]) {
   const emptyElements = arr.filter((v) => v.value === null);
   const randIndex = getRandomArbitrary(0, emptyElements.length - 1);
   const el = emptyElements[randIndex];

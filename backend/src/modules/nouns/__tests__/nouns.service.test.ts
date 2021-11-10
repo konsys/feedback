@@ -1,27 +1,17 @@
-// describe('Nouns service test', () => {
-//   it('should ', () => {
-//     expect(1).toBe(1);
-//   });
-// });
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NounsService } from '../nouns.service';
 import {
-  createWordsDirections,
+  getAvailableDirections,
   generateLinkedWordsSquare,
   getEmptyRandomArrayIndex,
-  getRandomArrayElement,
-  getRandomPosition,
 } from '../utils';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
 };
-
-let words = {};
 
 const repositoryMockFactory: () => MockType<Repository<NounsEntity>> = jest.fn(
   () => ({
@@ -68,8 +58,8 @@ describe('TestservicepackService', () => {
     expect(repositoryMock.findAndCount).toHaveBeenCalledWith({ length: 5 });
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 0,
       yPosition: 0,
       width: 10,
@@ -77,8 +67,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['1-0', '0-1']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 9,
       yPosition: 0,
       width: 10,
@@ -86,8 +76,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['8-0', '9-1']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 0,
       yPosition: 9,
       width: 10,
@@ -95,8 +85,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['1-9', '0-8']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 9,
       yPosition: 9,
       width: 10,
@@ -104,8 +94,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['8-9', '9-8']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 5,
       yPosition: 0,
       width: 10,
@@ -113,8 +103,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['6-0', '4-0', '5-1']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 0,
       yPosition: 5,
       width: 10,
@@ -122,8 +112,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['1-5', '0-6', '0-4']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 5,
       yPosition: 9,
       width: 10,
@@ -131,8 +121,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['6-9', '4-9', '5-8']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 9,
       yPosition: 5,
       width: 10,
@@ -140,8 +130,8 @@ describe('TestservicepackService', () => {
     expect(res).toStrictEqual(['8-5', '9-6', '9-4']);
   });
 
-  it('createWordsDirections tests', () => {
-    const res = createWordsDirections({
+  it('getAvailableDirections tests', () => {
+    const res = getAvailableDirections({
       xPosition: 5,
       yPosition: 5,
       width: 10,
@@ -159,16 +149,21 @@ describe('TestservicepackService', () => {
 
     const el = squareArray[randomIndex];
 
-    const availableDirections = createWordsDirections({
-      width,
-      xPosition: el.x,
-      yPosition: el.y,
-    });
+    const word = 'sport';
 
-    const nextSquare = getRandomPosition(availableDirections);
+    for (let i = 0; i < word.length; i++) {
+      const availableDirections = getAvailableDirections({
+        width,
+        xPosition: el.x,
+        yPosition: el.y,
+      });
 
-    expect(nextSquare).toStrictEqual(1);
-    expect(availableDirections).toStrictEqual(1);
-    expect(availableDirections).toStrictEqual(1);
+      // const nextSquare = getAvailableDirections(availableDirections);
+      // nextSquare;
+    }
+
+    // expect(nextSquare).toStrictEqual(1);
+    // expect(availableDirections).toStrictEqual(1);
+    // expect(availableDirections).toStrictEqual(1);
   });
 });
