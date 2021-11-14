@@ -10,8 +10,8 @@ export class NounsController {
     return await this.nounsService.getNounByLength(id);
   }
 
-  @Get('linked/:id')
-  async getLinked(@Param() { id }: { id: number }) {
+  @Get('square/:id')
+  async getLSquare(@Param() { id }: { id: number }) {
     return this.nounsService.generateSquareByWidth(id);
   }
 }
