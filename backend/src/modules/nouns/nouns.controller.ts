@@ -12,6 +12,6 @@ export class NounsController {
 
   @Get('linked/:id')
   async getLinked(@Param() { id }: { id: number }) {
-    return await this.nounsService.generateLinkedWordsSquare(id);
+    return this.nounsService.generateSquareByWidth(id);
   }
 }

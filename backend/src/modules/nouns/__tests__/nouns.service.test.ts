@@ -3,12 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NounsService } from '../nouns.service';
-import {
-  getAvailableDirections,
-  generateLinkedWordsSquare,
-  getEmptyRandomArrayIndex,
-  getRandomDirectionn,
-} from '../utils';
+import { getAvailableDirections } from '../utils';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
@@ -138,39 +133,5 @@ describe('TestservicepackService', () => {
       width: 10,
     });
     expect(res).toStrictEqual(['6-5', '4-5', '5-6', '5-4']);
-  });
-
-  it('randomProperty tests', async () => {
-    const width = 5;
-    const squareArray = generateLinkedWordsSquare(width);
-
-    const randomIndex = getEmptyRandomArrayIndex(squareArray);
-
-    expect(randomIndex).not.toBeGreaterThan(squareArray.length - 1);
-
-    const el = squareArray[randomIndex];
-
-    const word = 'sport';
-
-    squareArray[randomIndex] = {
-      ...squareArray[randomIndex],
-      value: word[0],
-    };
-    const availableDirections = getAvailableDirections({
-      width,
-      xPosition: el.x,
-      yPosition: el.y,
-    });
-
-    let direction = getRandomDirectionn(availableDirections);
-
-    for (let i = 1; i < word.length; i++) {
-      // const nextSquare = getAvailableDirections(availableDirections);
-      // nextSquare;
-    }
-
-    // expect(nextSquare).toStrictEqual(1);
-    // expect(availableDirections).toStrictEqual(1);
-    // expect(availableDirections).toStrictEqual(1);
   });
 });

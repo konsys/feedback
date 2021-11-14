@@ -3,6 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
+import {
+  generateLinkedWordsSquare,
+  getAvailableDirections,
+  getEmptyRandomArrayIndex,
+  getRandomDirection,
+} from './utils';
 
 @Injectable()
 export class NounsService {
@@ -28,6 +34,42 @@ export class NounsService {
     });
 
     await Promise.all(fncs);
+  }
+
+  public generateSquareByWidth(width: number) {
+    const squareArray = generateLinkedWordsSquare(width);
+
+    let randomIndex = getEmptyRandomArrayIndex(squareArray);
+    const el = squareArray[randomIndex];
+
+    const word = 'sport';
+
+    squareArray[randomIndex] = {
+      ...squareArray[randomIndex],
+      value: word[0],
+    };
+    let availableDirections = getAvailableDirections({
+      width,
+      xPosition: el.x,
+      yPosition: el.y,
+    });
+
+    let nextSquare = getRandomDirection(availableDirections);
+
+    for (let i = 1; i < word.length; i++) {
+      availableDirections = getAvailableDirections({
+        width,
+        xPosition: nextSquare[0],
+        yPosition: nextSquare[1],
+      });
+      nextSquare = getRandomDirection(availableDirections);
+      randomIndex = getEmptyRandomArrayIndex(squareArray);
+      squareArray[randomIndex] = {
+        ...squareArray[randomIndex],
+        value: word[i],
+      };
+    }
+    return squareArray;
   }
 }
 

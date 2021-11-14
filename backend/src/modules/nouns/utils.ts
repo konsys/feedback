@@ -112,7 +112,7 @@ export function getRandomArrayElement<T>(arr: T[]): T {
   return arr[randIndex];
 }
 
-export function getRandomDirectionn<T extends string>(arr: T[]): number[] {
+export function getRandomDirection<T extends string>(arr: T[]): number[] {
   const randIndex = getRandomArbitrary(0, arr.length - 1);
   return arr[randIndex].split('-').map((v) => Number(v));
 }
