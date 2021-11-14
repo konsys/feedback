@@ -1,5 +1,9 @@
+import { useGate, useStore } from "effector-react";
 import React from "react";
+import { wordsSquare$, WordsSquareGate } from "./model/store";
 
 export default function WordCube() {
-  return <div>WordCube</div>;
+  useGate(WordsSquareGate);
+  const wordsStore = useStore(wordsSquare$);
+  return <div>WordCube {JSON.stringify(wordsStore)}</div>;
 }
