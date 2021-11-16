@@ -5,6 +5,7 @@ import { TPositionValue } from "./types";
 
 const WordsSquareDomain = createDomain("WordsSquareDomain");
 
+export const WORD_SQUARE_WIDTH = 3;
 const getWordsSquareFx = WordsSquareDomain.effect<
   number,
   TPositionValue[],
@@ -18,7 +19,7 @@ export const WordsSquareGate = createGate();
 sample({
   clock: merge([WordsSquareGate.open]),
   source: WordsSquareGate.state,
-  fn: () => 4,
+  fn: () => WORD_SQUARE_WIDTH,
   target: getWordsSquareFx,
 });
 
