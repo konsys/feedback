@@ -1,18 +1,39 @@
 import React, { ReactElement } from "react";
+import { TPositionValue } from "../model/types";
 
 interface Props {
-  value: string;
+  position: TPositionValue;
+  squareWidth: number;
 }
 
-export default function Square({ value }: Props): ReactElement {
+export default function Square({ position, squareWidth }: Props): ReactElement {
+  const { x, y, value } = position;
   return (
-    <button
-      className="square"
-      onClick={function () {
-        alert("click");
+    <div
+      style={{
+        position: "absolute",
+        bottom: y * squareWidth,
+        left: x * squareWidth,
+        border: "1px solid red",
+        width: `${squareWidth}px`,
+        height: `${squareWidth}px`,
       }}
     >
-      {value}
-    </button>
+      <div
+        className="square"
+        onClick={function () {
+          alert(value);
+        }}
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {value}
+      </div>
+    </div>
   );
 }

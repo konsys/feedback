@@ -4,6 +4,7 @@ import Square from "./components/Square";
 import { wordsSquare$, WordsSquareGate } from "./model/store";
 import { TPositionValue } from "./model/types";
 
+const SQUARE_WIDTH = 70;
 const generateSquare = (wordsStore: TPositionValue[]) => {
   let x = 0;
   let row: string[] = [];
@@ -29,27 +30,16 @@ export default function WordCube() {
 
   console.log(generateSquare(wordsStore));
   return (
-    <div>
-      {/* {JSON.stringify(rowArray)} */}
-      <div>
-        <div className="status">{JSON.stringify(wordsStore)}</div>
-
-        <div className="board-row">
-          <Square value={"a"} />
-          <Square value={"a"} />
-          <Square value={"a"} />
-        </div>
-        <div className="board-row">
-          <Square value={"a"} />
-          <Square value={"a"} />
-          <Square value={"a"} />
-        </div>
-        <div className="board-row">
-          <Square value={"a"} />
-          <Square value={"a"} />
-          <Square value={"a"} />
-        </div>
-      </div>
+    <div
+      style={{
+        position: "relative",
+        width: `${SQUARE_WIDTH * 4}px`,
+        height: `${SQUARE_WIDTH * 4}px`,
+      }}
+    >
+      {wordsStore.map((position) => (
+        <Square position={position} squareWidth={SQUARE_WIDTH} />
+      ))}
     </div>
   );
 }
