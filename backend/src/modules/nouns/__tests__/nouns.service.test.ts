@@ -3,7 +3,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NounsService } from '../nouns.service';
-import { getAvailableDirections } from '../utils';
+import {
+  generateLinkedWordsSquare,
+  getAvailableDirections,
+  getEmptyRandomArrayIndex,
+  getRandomDirection,
+} from '../utils';
 
 export type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
@@ -60,7 +65,10 @@ describe('TestservicepackService', () => {
       yPosition: 0,
       width: 10,
     });
-    expect(res).toStrictEqual(['1-0', '0-1']);
+    expect(res).toStrictEqual([
+      { x: 1, y: 0, value: null },
+      { x: 0, y: 1, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -69,7 +77,10 @@ describe('TestservicepackService', () => {
       yPosition: 0,
       width: 10,
     });
-    expect(res).toStrictEqual(['8-0', '9-1']);
+    expect(res).toStrictEqual([
+      { x: 8, y: 0, value: null },
+      { x: 9, y: 1, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -78,7 +89,10 @@ describe('TestservicepackService', () => {
       yPosition: 9,
       width: 10,
     });
-    expect(res).toStrictEqual(['1-9', '0-8']);
+    expect(res).toStrictEqual([
+      { x: 1, y: 9, value: null },
+      { x: 0, y: 8, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -87,7 +101,10 @@ describe('TestservicepackService', () => {
       yPosition: 9,
       width: 10,
     });
-    expect(res).toStrictEqual(['8-9', '9-8']);
+    expect(res).toStrictEqual([
+      { x: 8, y: 9, value: null },
+      { x: 9, y: 8, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -96,7 +113,11 @@ describe('TestservicepackService', () => {
       yPosition: 0,
       width: 10,
     });
-    expect(res).toStrictEqual(['6-0', '4-0', '5-1']);
+    expect(res).toStrictEqual([
+      { x: 6, y: 0, value: null },
+      { x: 4, y: 0, value: null },
+      { x: 5, y: 1, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -105,7 +126,11 @@ describe('TestservicepackService', () => {
       yPosition: 5,
       width: 10,
     });
-    expect(res).toStrictEqual(['1-5', '0-6', '0-4']);
+    expect(res).toStrictEqual([
+      { x: 1, y: 5, value: null },
+      { x: 0, y: 6, value: null },
+      { x: 0, y: 4, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -114,7 +139,11 @@ describe('TestservicepackService', () => {
       yPosition: 9,
       width: 10,
     });
-    expect(res).toStrictEqual(['6-9', '4-9', '5-8']);
+    expect(res).toStrictEqual([
+      { x: 6, y: 9, value: null },
+      { x: 4, y: 9, value: null },
+      { x: 5, y: 8, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -123,7 +152,11 @@ describe('TestservicepackService', () => {
       yPosition: 5,
       width: 10,
     });
-    expect(res).toStrictEqual(['8-5', '9-6', '9-4']);
+    expect(res).toStrictEqual([
+      { x: 8, y: 5, value: null },
+      { x: 9, y: 6, value: null },
+      { x: 9, y: 4, value: null },
+    ]);
   });
 
   it('getAvailableDirections tests', () => {
@@ -132,6 +165,68 @@ describe('TestservicepackService', () => {
       yPosition: 5,
       width: 10,
     });
-    expect(res).toStrictEqual(['6-5', '4-5', '5-6', '5-4']);
+    expect(res).toStrictEqual([
+      { x: 6, y: 5, value: null },
+      { x: 4, y: 5, value: null },
+      { x: 5, y: 6, value: null },
+      { x: 5, y: 4, value: null },
+    ]);
   });
+
+  // it('should test generating square', () => {
+  //   const width = 3;
+  //   const squareArray = generateLinkedWordsSquare(width);
+  //   expect(squareArray.length).toBe(width * width);
+
+  //   let x = 0;
+  //   let y = 0;
+  //   for (let element of squareArray) {
+  //     expect(element).toStrictEqual({ value: null, x, y });
+  //     if (x === width - 1) {
+  //       x = 0;
+  //       y++;
+  //     } else {
+  //       x++;
+  //     }
+  //   }
+
+  //   let randomIndex = getEmptyRandomArrayIndex(squareArray);
+
+  //   expect(randomIndex).not.toBeGreaterThan(width * width);
+
+  //   const el = squareArray[0];
+
+  //   const word = 'sport';
+
+  //   squareArray[randomIndex] = {
+  //     ...squareArray[randomIndex],
+  //     value: word[0],
+  //   };
+
+  //   let availableDirections = getAvailableDirections({
+  //     width,
+  //     xPosition: el.x,
+  //     yPosition: el.y,
+  //   });
+
+  //   let nextSquare = getRandomDirection(availableDirections);
+
+  //   // expect(nextSquare).toBe(1);
+
+  //   for (let i = 1; i < word.length; i++) {
+  //     availableDirections = getAvailableDirections({
+  //       width,
+  //       xPosition: nextSquare.x,
+  //       yPosition: nextSquare.y,
+  //     });
+  //     nextSquare = getRandomDirection(availableDirections);
+  //     randomIndex = getEmptyRandomArrayIndex(squareArray);
+  //     squareArray[randomIndex] = {
+  //       ...squareArray[randomIndex],
+  //       value: word[i],
+  //     };
+  //   }
+
+  //   // expect(squareArray).toBe(width * width);
+  // });
 });

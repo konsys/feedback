@@ -3,35 +3,35 @@ import { TPosition, TPositionValue } from './nouns.service';
 
 const MAX_WIDTH = 10;
 
-export function getAvailableDirections(position: TPosition) {
+export function getAvailableDirections(position: TPosition): TPositionValue[] {
   if (position.xPosition === 0 && position.yPosition === 0) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
     ];
   } else if (
     position.xPosition === position.width - 1 &&
     position.yPosition === 0
   ) {
     return [
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
     ];
   } else if (
     position.xPosition === 0 &&
     position.yPosition === position.width - 1
   ) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   } else if (
     position.xPosition === position.width - 1 &&
     position.yPosition === position.width - 1
   ) {
     return [
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   } else if (
     position.xPosition > 0 &&
@@ -39,9 +39,9 @@ export function getAvailableDirections(position: TPosition) {
     position.yPosition === 0
   ) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
     ];
   } else if (
     position.xPosition === 0 &&
@@ -49,9 +49,9 @@ export function getAvailableDirections(position: TPosition) {
     position.yPosition < position.width - 1
   ) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   } else if (
     position.xPosition > 0 &&
@@ -59,9 +59,9 @@ export function getAvailableDirections(position: TPosition) {
     position.yPosition === position.width - 1
   ) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   } else if (
     position.xPosition === position.width - 1 &&
@@ -69,9 +69,9 @@ export function getAvailableDirections(position: TPosition) {
     position.yPosition < position.width - 1
   ) {
     return [
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   } else if (
     position.xPosition > 0 &&
@@ -80,10 +80,10 @@ export function getAvailableDirections(position: TPosition) {
     position.yPosition < position.width - 1
   ) {
     return [
-      `${position.xPosition + 1}-${position.yPosition}`,
-      `${position.xPosition - 1}-${position.yPosition}`,
-      `${position.xPosition}-${position.yPosition + 1}`,
-      `${position.xPosition}-${position.yPosition - 1}`,
+      { x: position.xPosition + 1, y: position.yPosition, value: null },
+      { x: position.xPosition - 1, y: position.yPosition, value: null },
+      { x: position.xPosition, y: position.yPosition + 1, value: null },
+      { x: position.xPosition, y: position.yPosition - 1, value: null },
     ];
   }
 }
@@ -95,12 +95,12 @@ export function generateLinkedWordsSquare(width: number): TPositionValue[] {
 
   let lettersField = [];
 
-  for (let xPosition = 0; xPosition < width; xPosition++) {
-    for (let yPosition = 0; yPosition < width; yPosition++) {
+  for (let yPosition = 0; yPosition < width; yPosition++) {
+    for (let xPosition = 0; xPosition < width; xPosition++) {
       lettersField.push({
-        value: null,
         x: xPosition,
         y: yPosition,
+        value: null,
       });
     }
   }
@@ -112,9 +112,9 @@ export function getRandomArrayElement<T>(arr: T[]): T {
   return arr[randIndex];
 }
 
-export function getRandomDirection<T extends string>(arr: T[]): number[] {
+export function getRandomDirection(arr: TPositionValue[]): TPositionValue {
   const randIndex = getRandomArbitrary(0, arr.length - 1);
-  return arr[randIndex].split('-').map((v) => Number(v));
+  return arr[randIndex];
 }
 
 export function getEmptyRandomArrayIndex(arr: TPositionValue[]) {
