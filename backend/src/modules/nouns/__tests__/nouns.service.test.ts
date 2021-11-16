@@ -173,60 +173,60 @@ describe('TestservicepackService', () => {
     ]);
   });
 
-  // it('should test generating square', () => {
-  //   const width = 3;
-  //   const squareArray = generateLinkedWordsSquare(width);
-  //   expect(squareArray.length).toBe(width * width);
+  it('should test generating square', () => {
+    const width = 3;
+    const squareArray = generateLinkedWordsSquare(width);
+    expect(squareArray.length).toBe(width * width);
 
-  //   let x = 0;
-  //   let y = 0;
-  //   for (let element of squareArray) {
-  //     expect(element).toStrictEqual({ value: null, x, y });
-  //     if (x === width - 1) {
-  //       x = 0;
-  //       y++;
-  //     } else {
-  //       x++;
-  //     }
-  //   }
+    let x = 0;
+    let y = 0;
+    for (let element of squareArray) {
+      expect(element).toStrictEqual({ value: null, x, y });
+      if (x === width - 1) {
+        x = 0;
+        y++;
+      } else {
+        x++;
+      }
+    }
 
-  //   let randomIndex = getEmptyRandomArrayIndex(squareArray);
+    let randomIndex = getEmptyRandomArrayIndex(squareArray);
 
-  //   expect(randomIndex).not.toBeGreaterThan(width * width);
+    expect(randomIndex).not.toBeGreaterThan(width * width);
 
-  //   const el = squareArray[0];
+    const el = squareArray[0];
 
-  //   const word = 'sport';
+    const word = 'sport';
 
-  //   squareArray[randomIndex] = {
-  //     ...squareArray[randomIndex],
-  //     value: word[0],
-  //   };
+    squareArray[randomIndex] = {
+      ...squareArray[randomIndex],
+      value: word[0],
+    };
 
-  //   let availableDirections = getAvailableDirections({
-  //     width,
-  //     xPosition: el.x,
-  //     yPosition: el.y,
-  //   });
+    let availableDirections = getAvailableDirections({
+      width,
+      xPosition: el.x,
+      yPosition: el.y,
+    });
 
-  //   let nextSquare = getRandomDirection(availableDirections);
+    let nextSquare = getRandomDirection(availableDirections);
 
-  //   // expect(nextSquare).toBe(1);
+    // expect(nextSquare).toBe(1);
 
-  //   for (let i = 1; i < word.length; i++) {
-  //     availableDirections = getAvailableDirections({
-  //       width,
-  //       xPosition: nextSquare.x,
-  //       yPosition: nextSquare.y,
-  //     });
-  //     nextSquare = getRandomDirection(availableDirections);
-  //     randomIndex = getEmptyRandomArrayIndex(squareArray);
-  //     squareArray[randomIndex] = {
-  //       ...squareArray[randomIndex],
-  //       value: word[i],
-  //     };
-  //   }
+    for (let i = 1; i < word.length; i++) {
+      availableDirections = getAvailableDirections({
+        width,
+        xPosition: nextSquare.x,
+        yPosition: nextSquare.y,
+      });
+      nextSquare = getRandomDirection(availableDirections);
+      randomIndex = getEmptyRandomArrayIndex(squareArray);
+      squareArray[randomIndex] = {
+        ...squareArray[randomIndex],
+        value: word[i],
+      };
+    }
 
-  //   // expect(squareArray).toBe(width * width);
-  // });
+    // expect(squareArray).toBe(width * width);
+  });
 });

@@ -53,14 +53,13 @@ export class NounsService {
       xPosition: el.x,
       yPosition: el.y,
     });
-
     let nextSquare = getRandomDirection(availableDirections);
 
     for (let i = 1; i < word.length; i++) {
       availableDirections = getAvailableDirections({
         width,
-        xPosition: nextSquare[0],
-        yPosition: nextSquare[1],
+        xPosition: nextSquare.x,
+        yPosition: nextSquare.y,
       });
       nextSquare = getRandomDirection(availableDirections);
       randomIndex = getEmptyRandomArrayIndex(squareArray);
