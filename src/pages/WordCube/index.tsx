@@ -6,27 +6,8 @@ import {
   WordsSquareGate,
   WORD_SQUARE_WIDTH,
 } from "./model/store";
-import { TPositionValue } from "./model/types";
 
 const LETTER_SQUARE_WIDTH = 70;
-const generateSquare = (wordsStore: TPositionValue[]) => {
-  let x = 0;
-  let row: string[] = [];
-  let rowArray: string[][] = [];
-
-  wordsStore.forEach((v, k) => {
-    if (x === v.x) {
-      row.push(v.value ?? "");
-    } else {
-      rowArray.push(row ?? "");
-      x++;
-      row = [];
-      row.push(v.value ?? "");
-    }
-  });
-  rowArray.push(row);
-  return rowArray;
-};
 
 export default function WordCube() {
   useGate(WordsSquareGate);

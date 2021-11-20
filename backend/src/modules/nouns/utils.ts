@@ -88,7 +88,10 @@ export function getAvailableDirections(position: TPosition): TPositionValue[] {
   }
 }
 
-export function generateLinkedWordsSquare(width: number): TPositionValue[] {
+export function generateLinkedWordsSquare(
+  width: number,
+  value?: string,
+): TPositionValue[] {
   if (width > MAX_WIDTH || width < 0) {
     throw new BadRequestException(`Width > ${MAX_WIDTH} or < 0`);
   }
@@ -100,40 +103,48 @@ export function generateLinkedWordsSquare(width: number): TPositionValue[] {
       lettersField.push({
         x: xPosition,
         y: yPosition,
-        value: null,
+        value: value ?? null,
       });
     }
   }
   return lettersField;
 }
 
-export function getRandomArrayElement<T>(arr: T[]): T {
+export function getRandomDirectionIndex(arr: TPositionValue[]): number {
   const randIndex = getRandomArbitrary(0, arr.length - 1);
-  return arr[randIndex];
+  return randIndex;
 }
 
-export function getRandomDirection(arr: TPositionValue[]): TPositionValue {
-  const randIndex = getRandomArbitrary(0, arr.length - 1);
-  return arr[randIndex];
+export function getEmptyRandomArrayIndex(
+  arr: TPositionValue[],
+  prevPosition: TPosition,
+) {
+  const availableDirections = getAvailableDirections(prevPosition);
+
+  const availvableIndexes: number[] = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const el = arr[i];
+
+    if (el.value === null) {
+      let availableDirection = availableDirections.find(
+        (v) => v.x === el.x && v.y === el.y,
+      );
+
+      if (availableDirection) {
+        availvableIndexes.push(i);
+      }
+    }
+  }
+
+  if (!availvableIndexes.length) {
+    return -1;
+  }
+
+  const randIndex = getRandomArbitrary(0, availvableIndexes.length - 1);
+  return availvableIndexes[randIndex];
 }
 
-export function getEmptyRandomArrayIndex(arr: TPositionValue[]) {
-  const emptyElements = arr.filter((v) => v.value === null);
-  const randIndex = getRandomArbitrary(0, emptyElements.length - 1);
-  const el = emptyElements[randIndex];
-  const index = arr.findIndex((v) => v.x === el.x && v.y === el.y);
-  return index;
-}
-
-export function getRandomProperty(obj: object) {
-  const keys = Object.keys(obj);
-  return obj[keys[(keys.length * Math.random()) << 0]];
-}
-
-export function randBinary() {
-  return Math.round(Math.random());
-}
-
-export function getRandomArbitrary(min: number, max: number) {
+function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }

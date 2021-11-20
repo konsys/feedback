@@ -3,12 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
-import {
-  generateLinkedWordsSquare,
-  getAvailableDirections,
-  getEmptyRandomArrayIndex,
-  getRandomDirection,
-} from './utils';
+import { generateLinkedWordsSquare, getEmptyRandomArrayIndex } from './utils';
 
 @Injectable()
 export class NounsService {
@@ -38,31 +33,23 @@ export class NounsService {
 
   public generateSquareByWidth(width: number) {
     const squareArray = generateLinkedWordsSquare(width);
-
-    let randomIndex = getEmptyRandomArrayIndex(squareArray);
-    const el = squareArray[randomIndex];
-
-    const word = 'sport';
+    const word = 'tresk';
+    let randomIndex = 0;
 
     squareArray[randomIndex] = {
       ...squareArray[randomIndex],
-      value: word[0],
+      value: word[randomIndex],
     };
-    let availableDirections = getAvailableDirections({
-      width,
-      xPosition: el.x,
-      yPosition: el.y,
-    });
-    let nextSquare = getRandomDirection(availableDirections);
 
     for (let i = 1; i < word.length; i++) {
-      availableDirections = getAvailableDirections({
+      const el = squareArray[randomIndex];
+
+      randomIndex = getEmptyRandomArrayIndex(squareArray, {
         width,
-        xPosition: nextSquare.x,
-        yPosition: nextSquare.y,
+        xPosition: el.x,
+        yPosition: el.y,
       });
-      nextSquare = getRandomDirection(availableDirections);
-      randomIndex = getEmptyRandomArrayIndex(squareArray);
+
       squareArray[randomIndex] = {
         ...squareArray[randomIndex],
         value: word[i],

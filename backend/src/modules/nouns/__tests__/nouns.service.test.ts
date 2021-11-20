@@ -7,7 +7,6 @@ import {
   generateLinkedWordsSquare,
   getAvailableDirections,
   getEmptyRandomArrayIndex,
-  getRandomDirection,
 } from '../utils';
 
 export type MockType<T> = {
@@ -173,60 +172,45 @@ describe('TestservicepackService', () => {
     ]);
   });
 
-  it('should test generating square', () => {
-    const width = 3;
-    const squareArray = generateLinkedWordsSquare(width);
+  it('should generate Linked Words Square', () => {
+    let width = 3;
+    let squareArray = generateLinkedWordsSquare(width);
     expect(squareArray.length).toBe(width * width);
 
-    let x = 0;
-    let y = 0;
-    for (let element of squareArray) {
-      expect(element).toStrictEqual({ value: null, x, y });
-      if (x === width - 1) {
-        x = 0;
-        y++;
-      } else {
-        x++;
-      }
-    }
+    width = 4;
+    squareArray = generateLinkedWordsSquare(width);
+    expect(squareArray.length).toBe(width * width);
 
-    let randomIndex = getEmptyRandomArrayIndex(squareArray);
+    squareArray = generateLinkedWordsSquare(width);
+    expect(squareArray[0].value).toBe(null);
 
-    expect(randomIndex).not.toBeGreaterThan(width * width);
+    squareArray = generateLinkedWordsSquare(width);
+    expect(squareArray[width - 1].value).toBe(null);
 
-    const el = squareArray[0];
+    squareArray = generateLinkedWordsSquare(width, 'wefwegvwfgwef');
+    expect(squareArray[0].value).toBe('wefwegvwfgwef');
 
-    const word = 'sport';
+    squareArray = generateLinkedWordsSquare(width, 'wefwegvwfgwef11');
+    expect(squareArray[width - 1].value).toBe('wefwegvwfgwef11');
+  });
 
-    squareArray[randomIndex] = {
-      ...squareArray[randomIndex],
-      value: word[0],
-    };
-
-    let availableDirections = getAvailableDirections({
+  it('should get Empty Random Array Index', () => {
+    let width = 4;
+    let squareArray = generateLinkedWordsSquare(width, 'f');
+    let index = getEmptyRandomArrayIndex(squareArray, {
       width,
-      xPosition: el.x,
-      yPosition: el.y,
+      xPosition: 0,
+      yPosition: 0,
     });
 
-    let nextSquare = getRandomDirection(availableDirections);
+    expect(index).toBe(-1);
 
-    // expect(nextSquare).toBe(1);
-
-    for (let i = 1; i < word.length; i++) {
-      availableDirections = getAvailableDirections({
-        width,
-        xPosition: nextSquare.x,
-        yPosition: nextSquare.y,
-      });
-      nextSquare = getRandomDirection(availableDirections);
-      randomIndex = getEmptyRandomArrayIndex(squareArray);
-      squareArray[randomIndex] = {
-        ...squareArray[randomIndex],
-        value: word[i],
-      };
-    }
-
-    // expect(squareArray).toBe(width * width);
+    squareArray = generateLinkedWordsSquare(width);
+    index = getEmptyRandomArrayIndex(squareArray, {
+      width,
+      xPosition: 0,
+      yPosition: 0,
+    });
+    expect(index).toBe(1);
   });
 });
