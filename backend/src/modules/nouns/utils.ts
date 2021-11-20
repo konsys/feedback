@@ -141,10 +141,11 @@ export function getEmptyRandomArrayIndex(
     return -1;
   }
 
-  const randIndex = getRandomArbitrary(0, availvableIndexes.length - 1);
+  const randIndex = getRandomArbitrary(0, availvableIndexes.length);
+
   return availvableIndexes[randIndex];
 }
 
-function getRandomArbitrary(min: number, max: number) {
+export function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }

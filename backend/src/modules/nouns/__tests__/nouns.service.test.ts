@@ -211,6 +211,6 @@ describe('TestservicepackService', () => {
       xPosition: 0,
       yPosition: 0,
     });
-    expect(index).toBe(1);
+    expect(index).toBeGreaterThan(-1);
   });
 });

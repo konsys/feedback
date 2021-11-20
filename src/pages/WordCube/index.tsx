@@ -1,3 +1,4 @@
+import { Input } from "antd";
 import { useGate, useStore } from "effector-react";
 import React from "react";
 import Square from "./components/Square";
@@ -15,7 +16,7 @@ export default function WordCube() {
 
   return (
     <>
-      <div>{JSON.stringify(wordsStore)}</div>
+      <Input placeholder="Введите сторону квадрата" />
       <div
         style={{
           position: "relative",
