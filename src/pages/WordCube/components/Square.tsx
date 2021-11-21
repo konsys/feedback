@@ -30,9 +30,12 @@ export default function Square({ position, squareWidth }: Props): ReactElement {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          fontFamily: "monospace",
+          fontSize: 32,
+          fontWeight: 600,
         }}
       >
-        {value}
+        {value?.toLocaleLowerCase()}
       </div>
     </div>
   );

@@ -149,3 +149,39 @@ export function getEmptyRandomArrayIndex(
 export function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+export const addWordToSquare = (
+  squareArray: TPositionValue[],
+  words: string[],
+) => {
+  const arrCopy = [...squareArray];
+  wordsArray: for (let word of words) {
+    let randomIndex = getRandomArbitrary(0, arrCopy.length - 1);
+
+    arrCopy[randomIndex] = {
+      ...arrCopy[randomIndex],
+      value: word[0],
+    };
+
+    for (let i = 1; i < word.length; i++) {
+      const el = arrCopy[randomIndex];
+
+      randomIndex = getEmptyRandomArrayIndex(arrCopy, {
+        width: Math.sqrt(arrCopy.length),
+        xPosition: el.x,
+        yPosition: el.y,
+      });
+
+      if (randomIndex === -1) {
+        // throw new Error('No place for this word');
+        continue wordsArray;
+      }
+      arrCopy[randomIndex] = {
+        ...arrCopy[randomIndex],
+        value: word[i],
+      };
+    }
+  }
+
+  return arrCopy;
+};

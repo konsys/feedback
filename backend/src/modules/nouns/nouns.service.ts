@@ -3,11 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
-import {
-  generateLinkedWordsSquare,
-  getEmptyRandomArrayIndex,
-  getRandomArbitrary,
-} from './utils';
+import { addWordToSquare, generateLinkedWordsSquare } from './utils';
 
 @Injectable()
 export class NounsService {
@@ -37,30 +33,12 @@ export class NounsService {
 
   public generateSquareByWidth(width: number) {
     const squareArray = generateLinkedWordsSquare(width);
-    const word = 'марихуана';
-
-    let randomIndex = getRandomArbitrary(0, squareArray.length - 1);
-
-    squareArray[randomIndex] = {
-      ...squareArray[randomIndex],
-      value: word[0],
-    };
-
-    for (let i = 1; i < word.length; i++) {
-      const el = squareArray[randomIndex];
-
-      randomIndex = getEmptyRandomArrayIndex(squareArray, {
-        width,
-        xPosition: el.x,
-        yPosition: el.y,
-      });
-
-      squareArray[randomIndex] = {
-        ...squareArray[randomIndex],
-        value: word[i],
-      };
+    const word = 'машинананана';
+    try {
+      return addWordToSquare(squareArray, ['мир', 'свет', 'окно', 'счет']);
+    } catch (err) {
+      return squareArray;
     }
-    return squareArray;
   }
 }
 

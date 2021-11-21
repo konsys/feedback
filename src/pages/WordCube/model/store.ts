@@ -5,7 +5,7 @@ import { TPositionValue } from "./types";
 
 const WordsSquareDomain = createDomain("WordsSquareDomain");
 
-export const WORD_SQUARE_WIDTH = 7;
+export const WORD_SQUARE_WIDTH = 4;
 const getWordsSquareFx = WordsSquareDomain.effect<
   number,
   TPositionValue[],
