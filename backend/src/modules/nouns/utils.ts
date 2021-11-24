@@ -150,6 +150,16 @@ export function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+export function fillEmptySquares(wordsArray: TPositionValue[]) {
+  const alph = 'абвгдежзиклмнопрстухчшюя';
+  return wordsArray.map((v) => {
+    if (v.value === null) {
+      return { ...v, value: alph[getRandomArbitrary(0, alph.length - 1)] };
+    }
+    return v;
+  });
+}
+
 export const addWordToSquare = (
   squareArray: TPositionValue[],
   words: string[],
@@ -173,7 +183,6 @@ export const addWordToSquare = (
       });
 
       if (randomIndex === -1) {
-        // throw new Error('No place for this word');
         continue wordsArray;
       }
       arrCopy[randomIndex] = {

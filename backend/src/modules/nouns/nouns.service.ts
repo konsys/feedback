@@ -3,7 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
-import { addWordToSquare, generateLinkedWordsSquare } from './utils';
+import {
+  addWordToSquare,
+  fillEmptySquares,
+  generateLinkedWordsSquare,
+} from './utils';
 
 @Injectable()
 export class NounsService {
@@ -33,9 +37,10 @@ export class NounsService {
 
   public generateSquareByWidth(width: number) {
     const squareArray = generateLinkedWordsSquare(width);
-    const word = 'машинананана';
     try {
-      return addWordToSquare(squareArray, ['мир', 'свет', 'окно', 'счет']);
+      const ar = addWordToSquare(squareArray, ['мир', 'свет', 'окно', 'счет']);
+
+      return fillEmptySquares(ar);
     } catch (err) {
       return squareArray;
     }

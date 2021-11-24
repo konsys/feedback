@@ -1,4 +1,4 @@
-import { createDomain, merge, sample } from "effector";
+import { createDomain, sample } from "effector";
 import { createGate } from "effector-react";
 import { wordsSquareFetch } from "./api";
 import { TPositionValue } from "./types";
@@ -6,6 +6,8 @@ import { TPositionValue } from "./types";
 const WordsSquareDomain = createDomain("WordsSquareDomain");
 
 export const WORD_SQUARE_WIDTH = 4;
+
+export const changeSideSize = WordsSquareDomain.event<number>();
 const getWordsSquareFx = WordsSquareDomain.effect<
   number,
   TPositionValue[],
@@ -17,9 +19,14 @@ const getWordsSquareFx = WordsSquareDomain.effect<
 export const WordsSquareGate = createGate();
 
 sample({
-  clock: merge([WordsSquareGate.open]),
-  source: WordsSquareGate.state,
+  clock: [WordsSquareGate.open],
   fn: () => WORD_SQUARE_WIDTH,
+  target: getWordsSquareFx,
+});
+
+sample({
+  clock: changeSideSize,
+  fn: (v) => v ?? WORD_SQUARE_WIDTH,
   target: getWordsSquareFx,
 });
 
