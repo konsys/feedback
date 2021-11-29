@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { TPosition, TPositionValue } from './nouns.service';
 
 const MAX_WIDTH = 10;
-
+export const ERROR_INDEX = -1;
 export function getAvailableDirections(position: TPosition): TPositionValue[] {
   if (position.xPosition === 0 && position.yPosition === 0) {
     return [
@@ -138,7 +138,7 @@ export function getEmptyRandomArrayIndex(
   }
 
   if (!availvableIndexes.length) {
-    return -1;
+    return ERROR_INDEX;
   }
 
   const randIndex = getRandomArbitrary(0, availvableIndexes.length);
@@ -160,37 +160,48 @@ export function fillEmptySquares(wordsArray: TPositionValue[]) {
   });
 }
 
-export const addWordToSquare = (
+export const addWordsToSquare = (
   squareArray: TPositionValue[],
   words: string[],
 ) => {
   const arrCopy = [...squareArray];
-  wordsArray: for (let word of words) {
+  const addedWords = [];
+
+  for (let word of words) {
     let randomIndex = getRandomArbitrary(0, arrCopy.length - 1);
 
-    arrCopy[randomIndex] = {
-      ...arrCopy[randomIndex],
-      value: word[0],
-    };
-
-    for (let i = 1; i < word.length; i++) {
-      const el = arrCopy[randomIndex];
-
-      randomIndex = getEmptyRandomArrayIndex(arrCopy, {
-        width: Math.sqrt(arrCopy.length),
-        xPosition: el.x,
-        yPosition: el.y,
-      });
-
-      if (randomIndex === -1) {
-        continue wordsArray;
-      }
-      arrCopy[randomIndex] = {
-        ...arrCopy[randomIndex],
-        value: word[i],
-      };
+    const res = addWord(word, squareArray, randomIndex);
+    if (res) {
+      addedWords.push(word);
     }
   }
 
+  return { wordsSquare: arrCopy, words: addedWords };
+};
+
+const addWord = (word: string, arr: TPositionValue[], randomIndex: number) => {
+  const arrCopy = [...arr];
+  arrCopy[randomIndex] = {
+    ...arrCopy[randomIndex],
+    value: word[0],
+  };
+  for (let i = 1; i < word.length; i++) {
+    const el = arrCopy[randomIndex];
+
+    randomIndex = getEmptyRandomArrayIndex(arrCopy, {
+      width: Math.sqrt(arrCopy.length),
+      xPosition: el.x,
+      yPosition: el.y,
+    });
+
+    if (randomIndex === ERROR_INDEX) {
+      return false;
+    }
+
+    arrCopy[randomIndex] = {
+      ...arrCopy[randomIndex],
+      value: word[i],
+    };
+  }
   return arrCopy;
 };

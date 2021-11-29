@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import shuffle from 'lodash/shuffle';
+import flatten from 'lodash/flatten';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
 import { NOUNS } from './nouns';
 import {
-  addWordToSquare,
+  addWordsToSquare,
   fillEmptySquares,
   generateLinkedWordsSquare,
+  getRandomArbitrary,
 } from './utils';
 
 @Injectable()
@@ -18,6 +21,15 @@ export class NounsService {
 
   async getNounByLength(length: number) {
     return await this.nounsRepository.findAndCount({ length });
+  }
+
+  async getRandomNounsByLength(length: number, take: number) {
+    const end = await this.nounsRepository.count({ where: { length } });
+    return await this.nounsRepository.find({
+      skip: getRandomArbitrary(0, end - 1),
+      take,
+      where: { length },
+    });
   }
 
   public async saveNouns() {
@@ -35,12 +47,24 @@ export class NounsService {
     await Promise.all(fncs);
   }
 
-  public generateSquareByWidth(width: number) {
+  public async generateSquareByWidth(width: number) {
+    const arr = shuffle(
+      flatten(
+        await Promise.all([
+          this.getRandomNounsByLength(7, 5),
+          this.getRandomNounsByLength(6, 5),
+          this.getRandomNounsByLength(7, 5),
+          this.getRandomNounsByLength(4, 5),
+          this.getRandomNounsByLength(3, 5),
+        ]),
+      ).map((v) => v.value),
+    ).slice(0, 5);
+
     const squareArray = generateLinkedWordsSquare(width);
     try {
-      const ar = addWordToSquare(squareArray, ['мир', 'свет', 'окно', 'счет']);
+      const ar = addWordsToSquare(squareArray, arr);
 
-      return fillEmptySquares(ar);
+      return { square: fillEmptySquares(ar.wordsSquare), words: ar.words };
     } catch (err) {
       return squareArray;
     }
