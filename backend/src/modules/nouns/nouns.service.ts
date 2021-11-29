@@ -47,23 +47,22 @@ export class NounsService {
   }
 
   public async generateSquareByWidth(width: number) {
-    const arr = shuffle(
-      flatten(
-        await Promise.all([
-          this.getRandomNounsByLength(7, 5),
-          this.getRandomNounsByLength(6, 5),
-          this.getRandomNounsByLength(7, 5),
-          this.getRandomNounsByLength(4, 5),
-          this.getRandomNounsByLength(3, 5),
-        ]),
-      ).map((v) => v.value),
-    ).slice(0, 5);
+    const names = await Promise.all([
+      this.getRandomNounsByLength(9, 50),
+      this.getRandomNounsByLength(8, 50),
+      this.getRandomNounsByLength(7, 50),
+      this.getRandomNounsByLength(9, 50),
+      this.getRandomNounsByLength(5, 50),
+      this.getRandomNounsByLength(4, 50),
+    ]);
+
+    const arr = shuffle(flatten(names).map((v) => v.value)).slice(0, 7);
 
     const squareArray = generateLinkedWordsSquare(width);
     try {
       const ar = addWordsToSquare(squareArray, arr);
-
-      return { square: fillEmptySquares(ar.wordsSquare), words: ar.words };
+      console.log(ar.words);
+      return fillEmptySquares(ar.wordsSquare);
     } catch (err) {
       return squareArray;
     }

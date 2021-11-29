@@ -15,8 +15,8 @@ const LETTER_SQUARE_WIDTH = 70;
 export default function WordCube() {
   useGate(WordsSquareGate);
   const wordsStore = useStore(wordsSquare$);
-
   const size = useStore(squareSize$);
+
   return (
     <>
       <InputNumber
