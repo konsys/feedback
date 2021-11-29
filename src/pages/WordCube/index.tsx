@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { InputNumber } from "antd";
 import { useGate, useStore } from "effector-react";
 import React from "react";
 import Square from "./components/Square";
@@ -6,8 +6,8 @@ import debounce from "lodash/debounce";
 import {
   wordsSquare$,
   WordsSquareGate,
-  WORD_SQUARE_WIDTH,
   changeSideSize,
+  squareSize$,
 } from "./model/store";
 
 const LETTER_SQUARE_WIDTH = 70;
@@ -16,17 +16,19 @@ export default function WordCube() {
   useGate(WordsSquareGate);
   const wordsStore = useStore(wordsSquare$);
 
+  const size = useStore(squareSize$);
   return (
     <>
-      <Input
+      <InputNumber
         placeholder="Введите сторону квадрата"
-        onChange={debounce((v) => changeSideSize(v.target.value), 500)}
+        onChange={debounce((v) => changeSideSize(v), 500)}
       />
       <div
         style={{
           position: "relative",
-          width: `${LETTER_SQUARE_WIDTH * WORD_SQUARE_WIDTH}px`,
-          height: `${LETTER_SQUARE_WIDTH * WORD_SQUARE_WIDTH}px`,
+          width: `${LETTER_SQUARE_WIDTH * size}px`,
+          height: `${LETTER_SQUARE_WIDTH * size}px`,
+          border: " 2px solid green",
         }}
       >
         {wordsStore.map((position, k) => (
