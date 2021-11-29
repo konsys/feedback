@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import shuffle from 'lodash/shuffle';
-import flatten from 'lodash/flatten';
+import { shuffle, flatten } from 'lodash';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NounsEntity } from 'src/entities/nouns.entity';
 import { Repository } from 'typeorm';
